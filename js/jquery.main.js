@@ -76,13 +76,17 @@ function getTools()
  */
 function setAnswer(post_id)
 {
-	var answer = jQuery('#answer');
+	var answers = new Array();
+	jQuery('.answer').each(function(){
+		answers[jQuery(this).attr('data-id')] = jQuery(this).val();		
+	});
+	
 	jQuery.ajax({
 		type: "POST",
 		url: '/wp-admin/admin-ajax.php?action=setanswer',
 		data: {
-			post_id : post_id,
-			answer  : answer.val()},
+			post_id : post_id,			
+			answer  : answers},
 		dataType: 'json',
 		success: function(data){
 			if(data.msg == 'OK')
@@ -91,8 +95,7 @@ function setAnswer(post_id)
 			}
 			else
 			{
-				alert('The answer can not be saved');
-				answer.val('');
+				alert('The answer can not be saved');				
 			}
 		}
 	});

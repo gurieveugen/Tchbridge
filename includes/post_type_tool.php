@@ -14,6 +14,7 @@ class PostTypeTool{
 		add_action('init', array($this, 'createPostTypeTool'));		
 		add_action('add_meta_boxes', array($this, 'metaBoxToolsOptions'));
 		add_action('save_post', array($this, 'saveToolsOptions'), 0);	
+		add_action('admin_head', array($this, 'customStylesAndScript'));
 		add_image_size('tool-img', 100, 100, true);
 		add_image_size('tool-small-img', 60, 40, false);
 	}
@@ -115,7 +116,7 @@ class PostTypeTool{
 		$post_types = array('tool');
 		if(in_array($post_type, $post_types))
 		{
-			add_meta_box('metaBoxToolsOptions', __('Tools Options'), array($this, 'metaBoxToolsOptionsRender'), $post_type, 'side', 'high');	
+			add_meta_box('metaBoxToolsOptions', __('Tools Options'), array($this, 'metaBoxToolsOptionsRender'), $post_type, 'normal', 'high');	
 		}
 		
 	}
@@ -125,23 +126,33 @@ class PostTypeTool{
 	 */
 	public function metaBoxToolsOptionsRender($post)
 	{
-		$tools_options    = get_post_meta($post->ID, 'tools_options', true);		
+		$index         = 1; 
+		$tools_options = get_post_meta($post->ID, 'tools_options', true);		
 		wp_nonce_field( 'tools_options_box', 'tools_options_box_nonce' );
-
 		?>	
-		<div class="gcslider">				
-			<p>
-				<label for="tools_options_question"><?php _e('Question'); ?>:</label>
-				<textarea name="tools_options[question]" id="tools_options_question" class="w100" cols="25" rows="10"><?php echo $tools_options['question']; ?></textarea>				
-			</p>	
-		</div>	
-
-		<div class="gcslider">				
-			<p>
-				<label for="tools_options_tool_tip"><?php _e('Tool tip'); ?>:</label>
-				<textarea name="tools_options[tool_tip]" id="tools_options_tool_tip" cols="25" class="w100" rows="10"><?php echo $tools_options['tool_tip']; ?></textarea>
-			</p>	
-		</div>	
+		<table id="questions" class="questions">
+			<tbody>
+				<tr>
+					<th>#</th>
+					<th><?php _e('Question'); ?></th>
+					<th><?php _e('Tool tip'); ?></th>
+				</tr>
+				<?php
+				if($tools_options['question'])
+				{
+					foreach ($tools_options['question'] as $key => $value) 
+					{
+						echo '<tr>';
+						echo '<td><b>'.$index++.'</b></td>';
+						echo '<td><textarea name="tools_options[question]['.$key.']" class="w100" cols="25" rows="4">'.$tools_options['question'][$key].'</textarea></td>';
+						echo '<td><textarea name="tools_options[tool_tip]['.$key.']" class="w100" cols="25" rows="4">'.$tools_options['tool_tip'][$key].'</textarea></td>';						
+						echo '</tr>';	
+					}	
+				}
+				?>				
+			</tbody>
+		</table>
+		<button type="button" onclick="addQuestion('questions');" class="button button-large"><?php _e('Add question'); ?></button>		
 		<?php
 	}
 
@@ -176,10 +187,74 @@ class PostTypeTool{
 		// =========================================================		
 		if(isset($_POST['tools_options']))
 		{
+			if(is_array($_POST['tools_options']))
+			{
+				foreach ($_POST['tools_options']['question'] as $key => $value) 
+				{
+					if($value == "")
+					{
+						unset($_POST['tools_options']['question'][$key]);
+						unset($_POST['tools_options']['tool_tip'][$key]);
+					}
+				}	
+			}
+			
 			update_post_meta($post_id, 'tools_options', $_POST['tools_options']);
 		}
 
 		return $post_id;
+	}
+
+	/**
+	* Custom CSS and Script for admin backend
+	*/
+	public function customStylesAndScript() 
+	{
+	?>
+		<style type="text/css">
+		.questions{
+			width: 100%;
+			text-align: left;
+			border-collapse: collapse;
+			border-spacing: 0;
+			margin-bottom: 30px;
+		}
+
+		.questions thead th{
+			border-bottom: 2px solid #DDDDDD;
+		}
+
+		.questions tbody tr:nth-child(odd) td,
+		.questions tbody tr:nth-child(odd) th {
+		  background-color: #f9f9f9;
+		}
+
+		.questions tbody tr:hover td,
+		.questions tbody tr:hover th {
+		  background-color: #f5f5f5;
+		}
+
+		.questions tbody tr{
+			border-top: 1px solid #DDDDDD;
+		}
+
+		.questions thead tr th,
+		.questions tbody tr td{
+			padding: 10px 5px;
+		}
+
+		.questions tbody tr td textarea{
+			width: 100%;
+		}
+		</style>
+		<script type='text/javascript'>
+			function addQuestion(id)
+			{			
+				jQuery('#' + id + ' tbody').append('<tr><td></td><td><textarea name="tools_options[question][]" class="w100" cols="25" rows="4"></textarea></td> <td><textarea name="tools_options[tool_tip][]" class="w100" cols="25" rows="4"></textarea></td></tr>');
+			}
+		</script>
+		<?php
+
 	}
 }
 

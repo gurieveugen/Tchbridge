@@ -257,9 +257,11 @@ function ts_edit_password_email_text($text)
 /**
  * Get pagination HTML Code
  */
-function getPagination()
-{	
+function getPagination($total = -1)
+{
+
 	global $wp_query;
+	if($total == -1) $total = $wp_query->max_num_pages;
 
 	$big   = 999999999; 	
 	$base  = esc_url(get_pagenum_link($big));
@@ -270,7 +272,7 @@ function getPagination()
 		'format'    => '?paged=%#%',
 		'show_all'  => True,
 		'current'   => max(1, get_query_var('paged')),
-		'total'     => $wp_query->max_num_pages,
+		'total'     => $total,
 		'type'		=> 'array'));
 	
 	if(isset($_GET) && $_GET['display'] == 'all')
@@ -303,6 +305,43 @@ function getPagination()
 	
 
 	return $str;
+}
+
+/**
+ * Custom pagination for dashboard
+ * @param  integer $total    
+ * @param  integer $per_page 
+ * @return string
+ */
+function getDashPagination($total, $per_page)
+{
+	$big         = 999999999; 	
+	$base        = esc_url(get_pagenum_link($big));
+	$base        = preg_replace('/\?.*/', '', $base);
+	$base        = str_replace($big, '%s', $base); 
+	$pages       = ceil($total/$per_page);
+	$start_block = '<div class="cf"><ul class="page-nav">';
+	$end_block   = '';
+	$middle      = '';
+	$current     = max(1, intval(get_query_var('paged')));
+
+	if(isset($_GET) && $_GET['display'] == 'all')
+	{
+		$current    = 9999999999;
+		$end_block .= '<li class="link-all active">view all</li></ul></div>';
+	}
+	else
+	{
+		$end_block .= '<li class="link-all"><a href="'.preg_replace('/\?.*/', '', get_pagenum_link('1')).'?display=all">view all</a></li></ul></div>';
+	}
+
+	for ($i=1; $i <= $pages; $i++) 
+	{ 
+		$url    = sprintf($base, $i);
+		$middle.= ($i == $current) ? '<li class="active">'.$i.'</li>'  : '<li><a href="'.$url.'">'.$i.'</a></li>';
+	}
+	
+	return $start_block.$middle.$end_block;
 }
 
 /**
@@ -348,12 +387,12 @@ function setAnswerAJAX()
 
     $json['msg'] = 'ERROR';
     if(isset($_POST['post_id']) AND isset($_POST['answer']))
-    {
-		$user_id           = $current_user->ID;
-		$post_id           = intval($_POST['post_id']);
-		$answer            = strip_tags($_POST['answer']);
-		$answers		   = get_user_meta($user_id, 'answers', true);
-		$answers[$post_id] = $answer;
+    {    	
+		$user_id                       = $current_user->ID;
+		$post_id                       = intval($_POST['post_id']);
+		$answer                        = $_POST['answer'];
+		$answers                       = get_user_meta($user_id, 'answers', true);
+		$answers[$post_id] 			   = $answer;
 
 		update_user_meta($user_id, 'answers', $answers);	    
 

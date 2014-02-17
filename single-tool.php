@@ -15,6 +15,7 @@
 			$meta      = $tools[get_the_ID()]->meta;			
 			$meta_user = get_user_meta($current_user->ID, 'answers', true);
 			$answer    = (isset($meta_user[$post->ID])) ? $meta_user[$post->ID] : '';
+
 			foreach ($tools as $key => $value) 
 			{
 				?>
@@ -46,37 +47,41 @@
 	?>
 	<section class="question-block">
 		<h3>QUESTIONS</h3>
-		<p class="question-text">
-			<?php 
-			echo $meta['question']; 
-			if(isset($meta['tool_tip']))
+			<form action="#" id="answers" method="post" onsubmit="setAnswer(<?php echo $post->ID; ?>); return false;">
+			<?php 			
+			if(is_array($meta['question']))
 			{
-				?>
-				<span class="ico-info">
-					<i></i>
-					<span class="box"><?php echo $meta['tool_tip']; ?></span>
-				</span>
-				<?php
-			}
-			?> 
-		</p>
-		<?php
-		if(!is_user_logged_in())
-		{
-			?>
-			<p><a href="#" onclick="showHide(true, ['#sign-in', '.lightbox-mask'], this);" class="pink">Sign in</a> to save your response</p>
-			<?php
-		}
-		else
-		{
-			?>
-			<form action="#" method="post" onsubmit="setAnswer(<?php echo $post->ID; ?>); return false;">
-				<textarea name="answer" id="answer"><?php echo $answer; ?></textarea>
-				<button class="btn pink" ><span>SAVE</span></button>
-			</form>
-			<?php
-		}
-		?>
+				foreach ($meta['question'] as $key => $value) 
+				{
+					echo '<p class="question-text">';
+					echo $value;
+					if($meta['tool_tip'][$key] != "")
+					{
+						?>
+						<span class="ico-info">
+							<i></i>
+							<span class="box"><?php echo $meta['tool_tip'][$key]; ?></span>
+						</span>
+						<?php
+					}
+					echo '</p>';
+					if(!is_user_logged_in())
+					{
+						?>
+						<p><a href="#" onclick="showHide(true, ['#sign-in', '.lightbox-mask'], this);" class="pink">Sign in</a> to save your response</p>
+						<?php
+					}
+					else
+					{
+						?>
+						<textarea name="answers[<?php echo $key; ?>]" data-id="<?php echo $key; ?>" class="answer"><?php echo $answer[$key]; ?></textarea>
+						<?php
+					}
+				}	
+			}?>
+
+			<button class="btn pink" ><span>SAVE</span></button>
+		</form>
 	</section>
 	<?php
 	}

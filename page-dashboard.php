@@ -6,7 +6,16 @@
 ?>
 <?php 
 get_header(); 
-$items = getDashboardItems($current_user->ID);
+$items               = getDashboardItems($current_user->ID);
+$items_count         = count($items);
+$all_responses       = $current_user->user_email.'?subject='.rawurlencode('All responses').'&body=';
+$theme_options       = $GLOBALS['gcoptions']->getAllOptions();
+$tools_per_page_dash = intval($theme_options['tools_per_page_dash']);
+$paged               = max(1, intval(get_query_var('paged')))-1;
+$offset 			 = $tools_per_page_dash*$paged;
+$pagination          = getDashPagination($items_count, $tools_per_page_dash);
+
+if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_page_dash);
 ?>
 
 		<div class="main-transparent">
@@ -16,7 +25,7 @@ $items = getDashboardItems($current_user->ID);
 				<div class="dashboard-accordion">
 					<?php foreach ($items as $key => $value) 
 					{
-						$mailto = $current_user->user_email.'?subject='.rawurlencode($value->post_title).'&body='.rawurlencode($value->meta['question'].' '.$value->answer);						
+						$mailto = $current_user->user_email.'?subject='.rawurlencode($value->post_title).'&body=';						
 						?>
 						<div class="item">
 							<div class="head cf">
@@ -26,118 +35,43 @@ $items = getDashboardItems($current_user->ID);
 							</div>
 							<div class="item-content cf">
 								<div class="content">
-									<h4><?php echo $value->meta['question']; ?></h4>
-									<p><?php echo $value->answer; ?></p>
+
+									<?php 
+									$all_responses .= strip_tags($value->post_title).rawurlencode("\n");
+									foreach ($value->meta['question'] as $key2 => $value2) 
+									{
+										echo '<h4>'.$value2.'</h4>';
+										echo '<p>'.$value->answer[$key2].'</p>';
+										$mailto        .= rawurlencode($value2.' '.$value->answer[$key2]."\n");
+										$all_responses .= rawurlencode($value2.' '.$value->answer[$key2]."\n");
+									}	
+									$all_responses .= rawurlencode("\n\n");								
+									?>									
 								</div>
 								<div class="aside buttons">
-									<button class="btn pink mini"><span>edit</span><i class="pensil"></i></button>
-									<a class="btn mini" href="mailto:<?php echo $mailto;?>"><span>email</span><i class="mail"></i></a>
+									<button class="btn pink mini" onclick="window.open('<?php echo get_permalink($value->ID); ?>', '_self', '');"><span>edit</span><i class="pensil"></i></button>
+									<button class="btn mini" onclick="window.open('mailto:<?php echo $mailto;?>', '_self', '');"><span>email</span><i class="mail"></i></button>
+									
 								</div>
 							</div>
 						</div>
 						<?php	
 					}
-					?>
-					<div class="item">
-						<div class="head cf">
-							<span class="ico ico-role"></span>
-							<h3>The Role Model Impact</h3>
-							<a href="#" class="btn-arrow">open/close</a>
-						</div>
-						<div class="item-content cf">
-							<div class="content">
-								<h4>What icebreaker will you lead when you next do STEM outreach with girls?</h4>
-								<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. </p>
-							</div>
-							<div class="aside buttons">
-								<button class="btn pink mini"><span>edit</span><i class="pensil"></i></button>
-								<button class="btn mini"><span>email</span><i class="mail"></i></button>
-							</div>
-						</div>
-					</div>
-					<div class="item open">
-						<div class="head cf">
-							<span class="ico ico-ice"></span>
-							<h3>Breaking the Ice</h3>
-							<a href="#" class="btn-arrow">open/close</a>
-						</div>
-						<div class="item-content cf">
-							<div class="content">
-								<h4>What icebreaker will you lead when you next do STEM outreach with girls?</h4>
-								<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. </p>
-							</div>
-							<div class="aside buttons">
-								<button class="btn pink mini"><span>edit</span><i class="pensil"></i></button>
-								<button class="btn mini"><span>email</span><i class="mail"></i></button>
-							</div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="head cf">
-							<span class="ico ico-messaging"></span>
-							<h3>STEM Messaging</h3>
-							<a href="#" class="btn-arrow">open/close</a>
-						</div>
-						<div class="item-content cf">
-							<div class="content">
-								<h4>What icebreaker will you lead when you next do STEM outreach with girls?</h4>
-								<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. </p>
-							</div>
-							<div class="aside buttons">
-								<button class="btn pink mini"><span>edit</span><i class="pensil"></i></button>
-								<button class="btn mini"><span>email</span><i class="mail"></i></button>
-							</div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="head cf">
-							<span class="ico ico-art"></span>
-							<h3>The Art of Questioning</h3>
-							<a href="#" class="btn-arrow">open/close</a>
-						</div>
-						<div class="item-content">
-							<div class="content cf">
-								<h4>What icebreaker will you lead when you next do STEM outreach with girls?</h4>
-								<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. </p>
-							</div>
-							<div class="aside buttons">
-								<button class="btn pink mini"><span>edit</span><i class="pensil"></i></button>
-								<button class="btn mini"><span>email</span><i class="mail"></i></button>
-							</div>
-						</div>
-					</div>
-					<div class="item open">
-						<div class="head cf">
-							<span class="ico ico-girls"></span>
-							<h3>Giving Girls Feedback</h3>
-							<a href="#" class="btn-arrow">open/close</a>
-						</div>
-						<div class="item-content cf">
-							<div class="content">
-								<h4>What kind of feedback would you give to a girl who is struggling with a hands-on STEM activity?</h4>
-								<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. </p>
-								<h4>What kind of feedback would you give to a girl who is finding a hands-on STEM activity easy?</h4>
-								<p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Proin gravida nibh.</p>
-							</div>
-							<div class="aside buttons">
-								<button class="btn pink mini"><span>edit</span><i class="pensil"></i></button>
-								<button class="btn mini"><span>email</span><i class="mail"></i></button>
-							</div>
-						</div>
-					</div>
+					?>					
 				</div>
-				<div class="cf">
+				<?php echo $pagination; ?>
+				<!-- <div class="cf">
 					<ul class="page-nav">
 						<li class="active">1</li>
 						<li><a href="#">2</a></li>
 						<li><a href="#">3</a></li>
 						<li class="link-all"><a href="#">View All</a></li>
 					</ul>
-				</div>
+				</div> -->
 				<div class="button-columns cf">
 					<div class="column">
 						<h2>Send my responses!</h2>
-						<button class="btn big"><span>email</span><i class="mail"></i></button>
+						<button class="btn big" onclick="window.open('mailto:<?php echo $all_responses;?>', '_self', '');"><span>email</span><i class="mail"></i></button>
 					</div>
 					<div class="column">
 						<h2>Help us improve!</h2>
@@ -146,4 +80,5 @@ $items = getDashboardItems($current_user->ID);
 				</div>
 			</div>
 		</div>
-<?php get_footer(); ?>
+<?php get_footer(); 
+
