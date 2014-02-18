@@ -1863,27 +1863,24 @@ h3{
 .dashboard-accordion .item.open{
 	background:#f5f3f1;
 }
-.dashboard-accordion .ico{
+.dashboard-accordion .image{
 	float:left;
-	background:url(images/dashboard-icons.png) no-repeat;
-	padding:1px 11px;
+	padding:1px 3px;
 	margin:0 0 0 7px;
 	width:72px;
 	height:62px;
 	line-height: 62px;
 	vertical-align:middle;
 	text-align:center;
+	vertical-align:middle;
+	opacity: 0.35;
 }
-.dashboard-accordion .ico.ico-role{background-position:0 0;}
-.dashboard-accordion .open .ico.ico-role{background-position:-100px 0;}
-.dashboard-accordion .ico.ico-ice{background-position:0 -51px;}
-.dashboard-accordion .open .ico.ico-ice{background-position:-100px -51px;}
-.dashboard-accordion .ico.ico-messaging{background-position:0 -120px;}
-.dashboard-accordion .open .ico.ico-messaging{background-position:-100px -120px;}
-.dashboard-accordion .ico.ico-art{background-position:0 -180px;}
-.dashboard-accordion .open .ico.ico-art{background-position:-100px -180px;}
-.dashboard-accordion .ico.ico-girls{background-position:0 -233px;}
-.dashboard-accordion .open .ico.ico-girls{background-position:-100px -233px;}
+.dashboard-accordion .open .image{
+	opacity: 1;
+}
+.dashboard-accordion .image img{
+	text-align:center;
+}
 .dashboard-accordion h3{
 	float:left;
 	margin:0;
@@ -1900,7 +1897,6 @@ h3{
 }
 .dashboard-accordion .open h3{
 	color:#092b40;
-	padding:23px 0 13px;
 }
 .dashboard-accordion .btn-arrow{
 	float:right;

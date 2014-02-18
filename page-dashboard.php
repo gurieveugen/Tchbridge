@@ -29,7 +29,15 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 						?>
 						<div class="item">
 							<div class="head cf">
-								<span class="ico ico-role"></span>
+								<div class="image">
+									<?php
+									if(has_post_thumbnail($value->ID))
+									{
+										echo get_the_post_thumbnail($value->ID, 'tool-small-img', array('alt' => get_the_title($value->ID)));
+									}
+									?>
+									<!-- <img src="<?php echo TDU; ?>/images/img-d-1.png" alt="image description"> -->
+								</div>
 								<h3><?php echo strip_tags($value->post_title); ?></h3>
 								<a href="#" onclick="openClose(this); return false;" class="btn-arrow">open/close</a>
 							</div>
