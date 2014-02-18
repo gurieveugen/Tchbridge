@@ -85,6 +85,7 @@ class GCOptionsPage{
         add_settings_field('designed_by_url', __('Designed by URL'), array($this, 'designed_by_url_callback'), __FILE__, 'default_settings');
         add_settings_field('tools_per_page', __('Tools per page'), array($this, 'tools_per_page_callback'), __FILE__, 'default_settings');
         add_settings_field('tools_per_page_dash', __('Tools per page on Dashboard'), array($this, 'tools_per_page_dash_callback'), __FILE__, 'default_settings');
+        add_settings_field('take_survey_url', __('Take survey URL'), array($this, 'take_survey_url_callback'), __FILE__, 'default_settings');
     }
 
     /**
@@ -104,6 +105,7 @@ class GCOptionsPage{
         if(isset($input['designed_by_url'])) $new_input['designed_by_url']         = strip_tags($input['designed_by_url']);
         if(isset($input['tools_per_page'])) $new_input['tools_per_page']           = intval($input['tools_per_page']);
         if(isset($input['tools_per_page_dash'])) $new_input['tools_per_page_dash'] = intval($input['tools_per_page_dash']);
+        if(isset($input['take_survey_url'])) $new_input['take_survey_url']         = strip_tags($input['take_survey_url']);
         
 
         return $new_input;
@@ -171,6 +173,14 @@ class GCOptionsPage{
     public function tools_per_page_dash_callback()
     {
         printf('<input type="text" id="tools_per_page_dash" name="gcoptions[tools_per_page_dash]" value="%s" />', isset($this->options['tools_per_page_dash']) ? $this->options['tools_per_page_dash'] : '');
+    }
+
+    /** 
+     * Get the settings option array and print one of its values
+     */
+    public function take_survey_url_callback()
+    {
+        printf('<input type="text" id="take_survey_url" name="gcoptions[take_survey_url]" value="%s" />', isset($this->options['take_survey_url']) ? $this->options['take_survey_url'] : '');
     }
 }
 // =========================================================

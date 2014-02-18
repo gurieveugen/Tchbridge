@@ -75,7 +75,7 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 					</div>
 					<div class="column">
 						<h2>Help us improve!</h2>
-						<button class="btn big dark"><span>TAKE SURVEY</span><i class="survey"></i></button>
+						<button class="btn big dark" onclick="window.open('<?php echo $theme_options['take_survey_url']; ?>', '', '');"><span>TAKE SURVEY</span><i class="survey"></i></button>
 					</div>
 				</div>
 			</div>

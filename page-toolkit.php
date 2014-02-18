@@ -28,6 +28,6 @@ $pages_count    = ceil($count/$tools_per_page);
 		</div>
 	</div>
 	<p>Help us improve!</p>
-	<button class="btn big dark"><span>TAKE SURVEY</span><i class="survey"></i></button>
+	<button class="btn big dark" onclick="window.open('<?php echo $options['take_survey_url']; ?>', '', '');"><span>TAKE SURVEY</span><i class="survey"></i></button>
 </div>
 <?php get_footer(); ?>
