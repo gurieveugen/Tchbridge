@@ -37,6 +37,9 @@ var page_number = 2;
     			jQuery('#please-specify').hide();
     		}
     	});
+    	jQuery('.question-text .ico-info .box').each(function(){
+    		jQuery(this).css({'top' : parseInt( '-' + (jQuery(this).height() / 2)-10) })
+    	});
 })
 })(jQuery)
 
@@ -97,6 +100,38 @@ function setAnswer(post_id)
 			{
 				alert('The answer can not be saved');				
 			}
+		}
+	});
+    
+    return false;
+}
+
+/**
+ * Select/Deselect filter category
+ * @param  boolean select 
+ * @param  integer cat
+ * @return boolean
+ */
+function selectDeselectCat(select, cat, term_id)
+{
+	jQuery.ajax({
+		type: "POST",
+		url: '/wp-admin/admin-ajax.php?action=selectdeselectcat',
+		data: {
+			select : select,
+			cat    : cat, 
+			term_id: term_id},
+		dataType: 'json',
+		success: function(data){
+			if(data.msg != '') window.open('/resources/', '_self', '');
+			// if(data.html != '')
+			// {
+			// 	jQuery('.posts').html(data.html);
+			// }
+			// if(data.categories != '')
+			// {
+			// 	jQuery('.categories').html(data.categories);
+			// }
 		}
 	});
     

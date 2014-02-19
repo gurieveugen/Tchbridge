@@ -153,6 +153,11 @@ function theme_default_content( $content ) {
 	return $content;
 }
 add_filter('default_content', 'theme_default_content');
+
+// =========================================================
+// LAUNCH
+// =========================================================
+launch_session();
 // =========================================================
 // REQUIRE
 // =========================================================
@@ -167,6 +172,8 @@ add_action('wp_ajax_gettools', 'getToolsAJAX');
 add_action('wp_ajax_nopriv_gettools', 'getToolsAJAX');
 add_action('wp_ajax_setanswer', 'setAnswerAJAX');
 add_action('wp_ajax_nopriv_setanswer', 'setAnswerAJAX');
+add_action('wp_ajax_selectdeselectcat', 'selectDeselectCatAJAX');
+add_action('wp_ajax_nopriv_selectdeselectcat', 'selectDeselectCatAJAX');
 add_action('register_form','custom_register_form');
 add_filter('registration_errors', 'custom_registration_errors', 10, 3);
 add_action('user_register', 'custom_user_register');
@@ -348,7 +355,7 @@ function getDashPagination($total, $per_page)
  * Get all categories to navigation block
  * @return string
  */
-function getCategoriesHTML($cat = -1)
+function getCategoriesHTML()
 {
 	$args = array(
 		'type'         => 'post',
@@ -361,15 +368,16 @@ function getCategoriesHTML($cat = -1)
 		'taxonomy'     => 'category',
 		'pad_counts'   => false); 
 
-	$categories = get_categories($args);
-	$str = '';
+	$categories    = get_categories($args);	
+	$str           = '';
+	$cats_selected = $_SESSION['cats_selected'];
 
 	if($categories)
 	{
 		$str.= '<nav class="nav-filter cf"><span>sort by</span><ul>';
 		foreach ($categories as $key => $value) 
 		{
-			$str.= '<li class="'.selectDeselect($value->term_id == $cat).'"><a href="'.get_category_link($value->term_id).'">'.$value->name.'</a></li>';
+			$str.= '<li class="'.selectDeselect(isset($cats_selected[$value->name])).'"><a href="'.get_category_link($value->term_id).'" onclick="selectDeselectCat('.intval(!isset($cats_selected[$value->name])).', \''.$value->name.'\', '.$value->term_id.'); return false;">'.$value->name.'</a></li>';
 		}
 		$str.= '</ul></nav>';
 	}
@@ -399,6 +407,38 @@ function setAnswerAJAX()
 		$json['msg']     = 'OK';	
     }
     
+
+	echo json_encode($json);
+	die();
+}
+
+/**
+ * Set answet to Tool question
+ */
+function selectDeselectCatAJAX()
+{
+	$cat           = $_POST['cat'];
+	$term_id       = intval($_POST['term_id']);
+	$cats_selected = $_SESSION['cats_selected'];
+
+	if(intval($_POST['select']))
+	{
+		$cats_selected[$cat] = $term_id;
+		$json['status']      = 'SELECTED CATEGORIES:'.implode(', ', $cats_selected);
+		$json['msg']		 = 'SELECTED';
+	}
+	else
+	{
+		unset($cats_selected[$cat]);
+		$json['status']      = 'SELECTED CATEGORIES:'.implode(', ', $cats_selected);
+		$json['msg']		 = 'DESELECTED';
+	}
+
+	$_SESSION['cats_selected'] = $cats_selected;
+
+    
+	// $json['html']       = load_template_part('loop', 'posts');
+	// $json['categories'] = getCategoriesHTML();
 
 	echo json_encode($json);
 	die();
@@ -460,4 +500,60 @@ function active($x = false)
 {
 	if($x) return 'active';
 	return '';
+}
+
+/**
+ * Launch session
+ */
+function launch_session()
+{
+	if(session_id() == '')
+	{
+		session_start();
+		if(!is_array($_SESSION['cats_selected']))
+		{
+			$_SESSION['cats_selected'] = getDefaultSelectedCats();
+		}
+	}
+}
+
+/**
+ * Get default selected categories
+ * @return  array
+ */
+function getDefaultSelectedCats()
+{
+	$args = array(
+		'type'         => 'post',
+		'child_of'     => 0,
+		'orderby'      => 'name',
+		'order'        => 'ASC',
+		'hide_empty'   => 1,
+		'hierarchical' => 1,
+		'exclude'      => '1',
+		'taxonomy'     => 'category',
+		'pad_counts'   => false); 
+
+	$categories = get_categories($args);
+
+	foreach ($categories as $key => $value) 
+	{
+		$selected_cats[$value->name] = $value->term_id;
+	}
+	return $selected_cats; 	
+}
+
+/**
+ * Get tamplate part to variable
+ * @param  string $template_name
+ * @param  string $part_name    
+ * @return string               
+ */
+function load_template_part($template_name, $part_name=null) 
+{
+    ob_start();
+    get_template_part($template_name, $part_name);
+    $var = ob_get_contents();
+    ob_end_clean();
+    return $var;
 }

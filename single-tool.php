@@ -21,7 +21,9 @@
 				?>
 				<li data-index="<?php echo $index++; ?>" data-id="<?php echo $value->ID;?>" class="<?php echo active(($post->ID == $value->ID)); ?>">
 					<a href="<?php echo get_permalink($value->ID); ?>">
-						<?php echo get_the_post_thumbnail($value->ID, 'tool-small-img', array('alt' => get_the_title($value->ID))); ?>
+						<span class="image">
+							<?php echo get_the_post_thumbnail($value->ID, 'tool-small-img', array('alt' => get_the_title($value->ID))); ?>
+						</span>
 						<span><?php echo strip_tags(get_the_title($value->ID)); ?></span>
 					</a>
 				</li>
@@ -78,9 +80,14 @@
 						<?php
 					}
 				}	
-			}?>
-
-			<button class="btn pink" ><span>SAVE</span></button>
+			}
+			if(is_user_logged_in())
+			{
+				?>			
+				<button class="btn pink" ><span>SAVE</span></button>
+				<?php 
+			}	
+			?>
 		</form>
 	</section>
 	<?php

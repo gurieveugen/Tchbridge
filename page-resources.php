@@ -5,17 +5,10 @@
 */
 ?>
 <?php get_header(); ?>
-<div class="main-blue">
-	<!-- <nav class="nav-filter cf">
-		<span>sort by</span>
-		<ul>
-			<li class="select"><a href="#">readings</a></li>
-			<li class="deselect"><a href="#">activities</a></li>
-			<li class="deselect"><a href="#">icebreakers</a></li>
-			<li class="deselect"><a href="#">other</a></li>
-		</ul>
-	</nav> -->
-	<?php echo getCategoriesHTML(); ?>
+<div class="main-blue">	
+	<div class="categories">
+		<?php echo getCategoriesHTML(); ?>
+	</div>
 	<div class="holder">
 		<h1>Recommended Readings for Role Models</h1>
 		<?php 		
@@ -27,7 +20,9 @@
 		
 		query_posts($wp_query->query_vars); 
 		?>
-		<?php get_template_part('loop', 'posts'); ?>
+		<div class="posts">
+			<?php get_template_part('loop', 'posts'); ?>	
+		</div>
 	</div>
 </div>
 <?php get_footer(); ?>
