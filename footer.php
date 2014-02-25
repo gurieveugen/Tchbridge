@@ -24,7 +24,7 @@
 		</section>
 		<div class="f-bottom cf">
 			<div class="right">
-				<span>Designed by <a href="<?php echo $theme_options['designed_by_url']; ?>" class="by-logo"><img src="<?php echo TDU; ?>/images/text-elefit-designs.png" alt="elefit designs"></a></span>
+				<span>Designed by <a href="<?php echo $theme_options['designed_by_url']; ?>" class="by-logo" target="_blank"><img src="<?php echo TDU; ?>/images/text-elefit-designs.png" alt="elefit designs"></a></span>
 			</div>
 			<ul class="cf">
 				<li>&copy; 2014 Techbridge</li>

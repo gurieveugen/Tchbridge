@@ -87,6 +87,17 @@ button, input, select, textarea {
 	font-weight: normal;
 	font-style: normal;
 }
+@font-face {
+    font-family: 'lobster';
+    src: url('fonts/lobster-webfont.eot');
+    src: url('fonts/lobster-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lobster-webfont.woff') format('woff'),
+         url('fonts/lobster-webfont.ttf') format('truetype'),
+         url('fonts/lobster-webfont.svg#lobster_1.4regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 body {
 	background:#efebe7;
 	color:#545761;
@@ -733,7 +744,29 @@ a.pink{
 	top:108px;
 	left:97px;
 	z-index:100;
+	/*font:50px/42px 'BrandonGrotesqueBlack', Arial, Helvetica, sans-serif;
+	color:#c1d82f;
+	text-transform:uppercase;
+	text-shadow: 0 1px 1px #c7c7c7;*/
 }
+/*.slider-holder .text strong span{
+	font:34px/36px 'lobster', Arial, Helvetica, sans-serif;
+	color:#fff;
+	text-transform:none;
+	position:absolute;
+	left:340px;
+	width:165px;
+	bottom:3px;
+	text-shadow:none;
+}
+.slider-holder .text strong span i{
+	font-size:137px;
+	line-height:100px;
+	font-style:normal;
+	position:absolute;
+	left:109px;
+	top:-40px;
+}*/
 .slider-holder .text img{
 	display:block;
 }
@@ -1701,13 +1734,16 @@ h3{
 }
 .socials  a{
 	display:block;
-	background:url(images/sprite.png) no-repeat;
+	background:url(images/ico-socials.png) no-repeat;
 	text-indent:-9999px;
 	overflow:hidden;
 }
-.socials .twitter a{background-position:-138px -151px;width:26px;height:19px;}
-.socials .facebook a{background-position:-169px -151px;width:11px;height:23px;}
-.socials .rss a{background-position:-185px -151px;width:15px;height:21px;}
+.socials .twitter a{background-position:-2px -35px;width:26px;height:19px;}
+.socials .twitter a:hover{background-position:-2px -5px;width:26px;height:19px;}
+.socials .facebook a{background-position:-39px -33px;width:11px;height:23px;}
+.socials .facebook a:hover{background-position:-39px -3px;width:11px;height:23px;}
+.socials .rss a{background-position:-67px -34px;width:15px;height:21px;}
+.socials .rss a:hover{background-position:-67px -4px;width:15px;height:21px;}
 .question-block{
 	padding:32px 410px 32px 8px;
 	border-top:1px solid #ccc;
@@ -1756,6 +1792,7 @@ h3{
 	border-radius:17px;
 	font:14px/22px Arial, Helvetica, sans-serif;
 	color:#fff;
+	z-index: 100;
 }
 .question-text .ico-info:hover .box{
 	display:block;
@@ -1777,6 +1814,7 @@ h3{
 	height:150px;
 	padding:10px;
 	margin:0 0 12px;
+	font:14px/16px Arial, Helvetica, sans-serif;
 }
 .question-block .btn{
 	margin: 0 0 0 auto;
