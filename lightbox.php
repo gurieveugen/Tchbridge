@@ -51,6 +51,7 @@
 			<button type="submit" class="btn big"><span>signup</span><i class="pensil"></i></button>
 			<p>By signing up, you are agreeing to our <a href="#" class="pink">Terms of Use</a>.</p>
 		</div>
+		<input type="hidden" name="redirect_to" value="<?php echo getRegistrationRedirectURL(); ?>"/>
 	</form>
 </div>
 <div class="lightbox-mask" style="display: none"></div>

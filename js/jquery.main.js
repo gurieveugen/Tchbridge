@@ -1,24 +1,16 @@
 var page_number = 2;
+var index       = 10;
 
 (function(jQuery) {
 	jQuery(function() {
 		jQuery('input, select').styler();
-		jQuery(".dial").knob({
-	      'draw' : function () { 
-	        jQuery(this.i).val(this.cv + '%')
-	      }
-    	});
-    	jQuery('.dial').css('font-size', '36px/123px');
-    	var index = parseInt(jQuery('.jcarousel ul li.active').attr('data-index'));
 		jQuery('.jcarousel').on('jcarousel:createend', function() {        
-        		jQuery(this).jcarousel('scroll', index, false);
-    		}).jcarousel({ 	
-    			wrap: 'circular',
-    			animation: {
-    			    	duration: 10,
-    				        easing:   'linear',
-    				        complete: function() {}
-    				}});
+    		jQuery(this).jcarousel('scroll', index, false); }).jcarousel({ 	
+			wrap: 'circular',
+			animation: 'slow'});
+			
+		jQuery('.slides-jcarousel').jcarousel();
+
     	jQuery('.lightbox-mask').click(function(event){
     		event.stopPropagation();
     		showHide(false, ['']);
@@ -40,6 +32,8 @@ var page_number = 2;
     	jQuery('.question-text .ico-info .box').each(function(){
     		jQuery(this).css({'top' : parseInt( '-' + (jQuery(this).height() / 2)-10) })
     	});
+
+    	jQuery('.jcarousel-control-next').jcarouselControl({ target: '+=1' });
 })
 })(jQuery)
 
@@ -123,15 +117,7 @@ function selectDeselectCat(select, cat, term_id)
 			term_id: term_id},
 		dataType: 'json',
 		success: function(data){
-			if(data.msg != '') window.open('/resources/', '_self', '');
-			// if(data.html != '')
-			// {
-			// 	jQuery('.posts').html(data.html);
-			// }
-			// if(data.categories != '')
-			// {
-			// 	jQuery('.categories').html(data.categories);
-			// }
+			if(data.msg != '') window.open('/resources/', '_self', '');			
 		}
 	});
     
@@ -143,7 +129,7 @@ function selectDeselectCat(select, cat, term_id)
  */
 function next()
 {
-	jQuery('.jcarousel').jcarousel('scroll', '+=1');	
+	//jQuery('.jcarousel').jcarouselControl({ target: '+=1' });
 }
 
 /**

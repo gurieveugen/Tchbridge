@@ -3,13 +3,10 @@
  * @package WordPress
  * @subpackage Base_Theme
  */
-
 define('TDU', get_bloginfo('template_url'));
-
 add_theme_support( 'automatic-feed-links' );
 add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list' ) );
 add_filter( 'use_default_gallery_style', '__return_false' );
-
 register_sidebar(array(
 	'id' => 'right-sidebar',
 	'name' => 'Right Sidebar',
@@ -17,72 +14,59 @@ register_sidebar(array(
 	'after_widget' => '</div>',
 	'before_title' => '<h3>',
 	'after_title' => '</h3>'
-));
-
+	));
 add_theme_support( 'post-thumbnails' );
 set_post_thumbnail_size( 604, 270, true );
 add_image_size( 'single-post-thumbnail', 400, 9999, false );
 add_image_size( 'category_post_thumb', 240, 170, true );
-
 register_nav_menus( array(
 	'primary_nav' => __( 'Primary Navigation', 'theme' ),
 	'top_nav' => __( 'Top Navigation', 'theme' ),
 	'bottom_nav' => __( 'Bottom Navigation', 'theme' )
-) );
-
+	) );
 function change_menu_classes($css_classes){
 	$css_classes = str_replace("current-menu-item", "current-menu-item active", $css_classes);
 	$css_classes = str_replace("current-menu-parent", "current-menu-parent active", $css_classes);
 	return $css_classes;
 }
 add_filter('nav_menu_css_class', 'change_menu_classes');
-
 function filter_template_url($text) {
 	return str_replace('[template-url]',get_bloginfo('template_url'), $text);
 }
 add_filter('the_content', 'filter_template_url');
 add_filter('get_the_content', 'filter_template_url');
 add_filter('widget_text', 'filter_template_url');
-
 function theme_paging_nav() {
 	global $wp_query;
-
 	// Don't print empty markup if there's only one page.
 	if ( $wp_query->max_num_pages < 2 )
 		return;
 	?>
 	<nav class="navigation paging-navigation" role="navigation">
 		<div class="nav-links cf">
-
 			<?php if ( get_next_posts_link() ) : ?>
 			<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'theme' ) ); ?></div>
 			<?php endif; ?>
-
 			<?php if ( get_previous_posts_link() ) : ?>
 			<div class="nav-next"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'theme' ) ); ?></div>
 			<?php endif; ?>
-
 		</div><!-- .nav-links -->
 	</nav><!-- .navigation -->
 	<?php
 }
 function theme_post_nav() {
 	global $post;
-
 	// Don't print empty markup if there's nowhere to navigate.
 	$previous = ( is_attachment() ) ? get_post( $post->post_parent ) : get_adjacent_post( false, '', true );
 	$next     = get_adjacent_post( false, '', false );
-
 	if ( ! $next && ! $previous )
 		return;
 	?>
 	<nav class="navigation post-navigation" role="navigation">
 		<h1 class="screen-reader-text"><?php _e( 'Post navigation', 'theme' ); ?></h1>
 		<div class="nav-links">
-
 			<?php previous_post_link( '%link', _x( '<span class="meta-nav">&larr;</span> %title', 'Previous post link', 'theme' ) ); ?>
 			<?php next_post_link( '%link', _x( '%title <span class="meta-nav">&rarr;</span>', 'Next post link', 'theme' ) ); ?>
-
 		</div><!-- .nav-links -->
 	</nav><!-- .navigation -->
 	<?php
@@ -92,38 +76,31 @@ function theme_entry_date( $echo = true ) {
 		$format_prefix = _x( '%1$s on %2$s', '1: post format name. 2: date', 'theme' );
 	else
 		$format_prefix = '%2$s';
-
 	$date = sprintf( '<span class="date"><a href="%1$s" title="%2$s" rel="bookmark"><time class="entry-date" datetime="%3$s">%4$s</time></a></span>',
 		esc_url( get_permalink() ),
 		esc_attr( sprintf( __( 'Permalink to %s', 'theme' ), the_title_attribute( 'echo=0' ) ) ),
 		esc_attr( get_the_date( 'c' ) ),
 		esc_html( sprintf( $format_prefix, get_post_format_string( get_post_format() ), get_the_date() ) )
 	);
-
 	if ( $echo )
 		echo $date;
-
 	return $date;
 }
 function theme_entry_meta() {
 	if ( is_sticky() && is_home() && ! is_paged() )
 		echo '<span class="featured-post">' . __( 'Sticky', 'theme' ) . '</span>';
-
 	if ( ! has_post_format( 'link' ) && 'post' == get_post_type() )
 		theme_entry_date();
-
 	// Translators: used between list items, there is a space after the comma.
 	$categories_list = get_the_category_list( __( ', ', 'theme' ) );
 	if ( $categories_list ) {
 		echo '<span class="categories-links">' . $categories_list . '</span>';
 	}
-
 	// Translators: used between list items, there is a space after the comma.
 	$tag_list = get_the_tag_list( '', __( ', ', 'theme' ) );
 	if ( $tag_list ) {
 		echo '<span class="tags-links">' . $tag_list . '</span>';
 	}
-
 	// Post author
 	if ( 'post' == get_post_type() ) {
 		printf( '<span class="author vcard"><a class="url fn n" href="%1$s" title="%2$s" rel="author">%3$s</a></span>',
@@ -133,27 +110,17 @@ function theme_entry_meta() {
 		);
 	}
 }
-// function scripts_method() {
-// 	wp_deregister_script( 'jquery' );
-// 	wp_register_script( 'jquery', TDU.'/js/jquery-1.9.1.min.js');
-// 	wp_enqueue_script( 'jquery' );
-// }
-// add_action('wp_enqueue_scripts', 'scripts_method');
-
-// register tag [template-url]
 function template_url($text) {
 	return str_replace('[template-url]',get_bloginfo('template_url'), $text);
 }
 add_filter('the_content', 'template_url');
 add_filter('get_the_content', 'template_url');
 add_filter('widget_text', 'template_url');
-
 function theme_default_content( $content ) {
-	$content = "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ultrices, magna non porttitor commodo, massa nibh malesuada augue, non viverra odio mi quis nisl. Nullam convallis tincidunt dignissim. Nam vitae purus eget quam adipiscing aliquam. Sed a congue libero. Quisque feugiat tincidunt tortor sed sodales. Etiam mattis, justo in euismod volutpat, ipsum quam aliquet lectus, eu blandit neque libero eu justo. Nunc nibh nulla, accumsan in imperdiet vel, pretium in metus. Aenean in lacus at lacus imperdiet euismod in non nulla. Mauris luctus sodales metus, ac porttitor est lacinia non. Proin diam urna, feugiat at adipiscing in, varius vel mi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed tincidunt commodo massa interdum iaculis.</p><!--more--><p>Aliquam metus libero, elementum et malesuada fermentum, sagittis et libero. Nullam quis odio vel ipsum facilisis viverra id sit amet nibh. Vestibulum ullamcorper luctus lacinia. Etiam accumsan, orci eu blandit vestibulum, purus ante malesuada purus, non commodo odio ligula quis turpis. Vestibulum scelerisque feugiat diam, eu mollis elit cursus nec. Quisque commodo ultricies scelerisque. In hac habitasse platea dictumst. Nullam hendrerit rhoncus lacus, id lobortis leo condimentum sed. Nulla facilisi. Quisque ut velit a neque feugiat rutrum at sit amet neque. Sed at libero dictum est aliquam porttitor. Morbi tempor nulla ut tellus malesuada cursus condimentum metus luctus. Quisque dui neque, lobortis id vehicula et, tincidunt eget justo. Morbi vulputate velit eget leo fermentum convallis. Nam mauris risus, consectetur a posuere ultricies, elementum non orci.</p><p>Ut viverra elit vel mauris venenatis gravida ut quis mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend urna sit amet nisi scelerisque pretium. Nulla facilisi. Donec et odio vel sem gravida cursus vestibulum dapibus enim. Pellentesque eget aliquet nisl. In malesuada, quam ac interdum placerat, elit metus consequat lorem, non consequat felis ipsum et ligula. Sed varius interdum volutpat. Vestibulum et libero nisi. Maecenas sit amet risus et sapien lobortis ornare vel quis ipsum. Nam aliquet euismod aliquam. Donec velit purus, convallis ac convallis vel, malesuada vitae erat.</p>";
+	$content = "<p>Enter your content here. If you are adding a new resource post, text above the \"More\" page break will appear on the list of resources.</p><!--more--><p>Text below the \"More\" page break will only be visible if the user clicks the resource title to view the full post.</p>";
 	return $content;
 }
 add_filter('default_content', 'theme_default_content');
-
 // =========================================================
 // LAUNCH
 // =========================================================
@@ -189,6 +156,19 @@ if(!is_admin())
 // METHODS
 // =========================================================
 /**
+ * Redirect after succes registration
+ * @return string
+ */
+function getRegistrationRedirectURL()
+{
+	if(strpos($_SERVER['HTTP_REFERER'], get_bloginfo('url')))
+	{
+		return $_SERVER['HTTP_REFERER'];
+	}
+    return get_bloginfo('url');
+}
+
+/**
  * Add custom fields to register form
  */
 function custom_register_form()
@@ -196,7 +176,7 @@ function custom_register_form()
 	$full_name  = (isset($_POST['full_name'])) ? $_POST['full_name'] : '';
 	$employment = (isset($_POST['employment'])) ? $_POST['employment'] : '';
 	$password   = (isset($_POST['password'])) ? $_POST['password'] : '';
-	
+
     ?>
     <p>
         <label for="full_name"><?php _e('Full name') ?><br />
@@ -212,10 +192,10 @@ function custom_register_form()
         <label for="password"><?php _e('Password') ?><br />
             <input type="password" name="password" id="password" class="input" value="<?php echo esc_attr(stripslashes($password)); ?>" size="75" />
         </label>
-    </p>
+    </p>    
+    <input type="hidden" name="redirect_to" value="<?php echo getRegistrationRedirectURL(); ?>"/>
     <?php
 }
-
 /**
  * Check errors
  * @param  object $errors               
@@ -227,10 +207,8 @@ function custom_registration_errors($errors, $sanitized_user_login, $user_email)
 {
     if(empty( $_POST['full_name'])) $errors->add('full_name_error', __('<strong>ERROR</strong>: You must include a full name.'));
     if(empty( $_POST['employment'])) $errors->add('employment_error', __('<strong>ERROR</strong>: You must include a employment.'));
-
     return $errors;
 }
-
 /**
  * Save user data
  * @param  integer $user_id
@@ -241,12 +219,11 @@ function custom_user_register ($user_id)
 	$userdata['ID'] = $user_id;
 	if($_POST['password'] !== '') $userdata['user_pass'] = $_POST['password'];
 	$new_user_id = wp_update_user( $userdata );
-	
+
     if(isset($_POST['full_name'])) update_user_meta($user_id, 'full_name', $_POST['full_name']);
     if(isset($_POST['employment'])) update_user_meta($user_id, 'employment', $_POST['employment']);
     if(isset($_POST['password'])) update_user_meta($user_id, 'password', $_POST['password']);
 }
-
 /**
  * Replace register text
  * @param  string $text 
@@ -266,10 +243,8 @@ function ts_edit_password_email_text($text)
  */
 function getPagination($total = -1)
 {
-
 	global $wp_query;
 	if($total == -1) $total = $wp_query->max_num_pages;
-
 	$big   = 999999999; 	
 	$base  = esc_url(get_pagenum_link($big));
 	$base  = preg_replace('/\?.*/', '', $base);
@@ -281,11 +256,10 @@ function getPagination($total = -1)
 		'current'   => max(1, get_query_var('paged')),
 		'total'     => $total,
 		'type'		=> 'array'));
-	
+
 	if(isset($_GET) && $_GET['display'] == 'all')
 	{
 		$str = '<div class="cf"><ul class="page-nav">';	
-
 		if($links)
 		{
 			$links[0] = '<a href="'.preg_replace('/\?.*/', '', get_pagenum_link('1')).'">1</a>';			
@@ -294,7 +268,8 @@ function getPagination($total = -1)
 				$str   .= '<li>'.$value.'</li>';
 			}	
 		}
-		$str.= '<li class="link-all active"><span>view all</span></li></ul></div>';
+		//$str.= '<li class="link-all active"><span>view all</span></li></ul></div>';
+		$str.= '</ul></div>';
 	}
 	else
 	{
@@ -309,11 +284,9 @@ function getPagination($total = -1)
 		}
 		$str.= '<li class="link-all"><a href="'.preg_replace('/\?.*/', '', get_pagenum_link('1')).'?display=all">view all</a></li></ul></div>';
 	}
-	
 
 	return $str;
 }
-
 /**
  * Custom pagination for dashboard
  * @param  integer $total    
@@ -331,7 +304,6 @@ function getDashPagination($total, $per_page)
 	$end_block   = '';
 	$middle      = '';
 	$current     = max(1, intval(get_query_var('paged')));
-
 	if(isset($_GET) && $_GET['display'] == 'all')
 	{
 		$current    = 9999999999;
@@ -341,16 +313,14 @@ function getDashPagination($total, $per_page)
 	{
 		$end_block .= '<li class="link-all"><a href="'.preg_replace('/\?.*/', '', get_pagenum_link('1')).'?display=all">view all</a></li></ul></div>';
 	}
-
 	for ($i=1; $i <= $pages; $i++) 
 	{ 
 		$url    = sprintf($base, $i);
 		$middle.= ($i == $current) ? '<li class="active">'.$i.'</li>'  : '<li><a href="'.$url.'">'.$i.'</a></li>';
 	}
-	
+
 	return $start_block.$middle.$end_block;
 }
-
 /**
  * Get all categories to navigation block
  * @return string
@@ -367,11 +337,9 @@ function getCategoriesHTML()
 		'exclude'      => '1',
 		'taxonomy'     => 'category',
 		'pad_counts'   => false); 
-
 	$categories    = get_categories($args);	
 	$str           = '';
 	$cats_selected = $_SESSION['cats_selected'];
-
 	if($categories)
 	{
 		$str.= '<nav class="nav-filter cf"><span>sort by</span><ul>';
@@ -383,16 +351,13 @@ function getCategoriesHTML()
 	}
 	return $str;
 }
-
 /**
  * Set answet to Tool question
  */
 function setAnswerAJAX()
 {
 	global $current_user, $post;
-
     get_currentuserinfo();
-
     $json['msg'] = 'ERROR';
     if(isset($_POST['post_id']) AND isset($_POST['answer']))
     {    	
@@ -401,17 +366,13 @@ function setAnswerAJAX()
 		$answer                        = $_POST['answer'];
 		$answers                       = get_user_meta($user_id, 'answers', true);
 		$answers[$post_id] 			   = $answer;
-
 		update_user_meta($user_id, 'answers', $answers);	    
-
 		$json['msg']     = 'OK';	
     }
-    
 
 	echo json_encode($json);
 	die();
 }
-
 /**
  * Set answet to Tool question
  */
@@ -420,7 +381,6 @@ function selectDeselectCatAJAX()
 	$cat           = $_POST['cat'];
 	$term_id       = intval($_POST['term_id']);
 	$cats_selected = $_SESSION['cats_selected'];
-
 	if(intval($_POST['select']))
 	{
 		$cats_selected[$cat] = $term_id;
@@ -433,17 +393,13 @@ function selectDeselectCatAJAX()
 		$json['status']      = 'SELECTED CATEGORIES:'.implode(', ', $cats_selected);
 		$json['msg']		 = 'DESELECTED';
 	}
-
 	$_SESSION['cats_selected'] = $cats_selected;
 
-    
 	// $json['html']       = load_template_part('loop', 'posts');
 	// $json['categories'] = getCategoriesHTML();
-
 	echo json_encode($json);
 	die();
 }
-
 /**
  * Get all dashboard items
  * @param  integer $user_id 
@@ -465,7 +421,6 @@ function getDashboardItems($user_id)
 	}
 	return $arr;
 }
-
 /**
  * Get AJAX loop tools
  */
@@ -479,7 +434,6 @@ function getToolsAJAX()
 	}
 	die();
 }
-
 /**
  * Helper for li css class
  * @param  boolean $x 
@@ -490,7 +444,6 @@ function selectDeselect($x = false)
 	if($x) return 'select';
 	return 'deselect';
 }
-
 /**
  * Helper for li css class
  * @param  boolean $x 
@@ -501,7 +454,6 @@ function active($x = false)
 	if($x) return 'active';
 	return '';
 }
-
 /**
  * Launch session
  */
@@ -516,7 +468,6 @@ function launch_session()
 		}
 	}
 }
-
 /**
  * Get default selected categories
  * @return  array
@@ -533,16 +484,13 @@ function getDefaultSelectedCats()
 		'exclude'      => '1',
 		'taxonomy'     => 'category',
 		'pad_counts'   => false); 
-
 	$categories = get_categories($args);
-
 	foreach ($categories as $key => $value) 
 	{
 		$selected_cats[$value->name] = $value->term_id;
 	}
 	return $selected_cats; 	
 }
-
 /**
  * Get tamplate part to variable
  * @param  string $template_name
