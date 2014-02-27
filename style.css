@@ -737,6 +737,7 @@ a.pink{
 #nav li.resources a:after{background-position:-117px -26px;width:15px;height:25px;left:36px;top:38px;}
 .slider-holder{
 	position:relative;
+	overflow:hidden;
 	margin:0 0 59px;
 }
 .slider-holder .text{
@@ -783,10 +784,8 @@ a.pink{
 	position:relative;
 	float: left;
 	width:1024px;
+	overflow:hidden;
 	height:440px;
-}
-.slides li.active{
-	z-index:100;
 }
 .slides li img{
 	display:block;
@@ -875,7 +874,7 @@ a.pink{
 }
 .slides .percentage span{
 	background:url(images/percents/0.png) no-repeat; 
-	z-index: 1;
+	z-index: 10;
 	position:relative;
 	display:block !important;
 	width:123px;
@@ -1897,8 +1896,14 @@ h3{
 .nav-filter ul .select a{
 	color:#c1d82f;
 }
+.nav-filter ul .select a:hover{
+	color:#a4c7f7;
+}
 .nav-filter ul .deselect a{
 	color:#a4c7f7;
+}
+.nav-filter ul .deselect a:hover{
+	color:#c1d82f;
 }
 .nav-filter ul a:hover{
 	text-decoration:none;

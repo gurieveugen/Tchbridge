@@ -8,8 +8,6 @@ var index       = 10;
     		jQuery(this).jcarousel('scroll', index, false); }).jcarousel({ 	
 			wrap: 'circular',
 			animation: 'slow'});
-			
-		jQuery('.slides-jcarousel').jcarousel();
 
     	jQuery('.lightbox-mask').click(function(event){
     		event.stopPropagation();

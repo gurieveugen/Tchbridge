@@ -32,13 +32,13 @@ class PostTypeTool{
 			'add_new_item'       => __('Add new tool'),
 			'edit_item'          => __('Edit tool'),
 			'new_item'           => __('Add new tool'),
-			'all_items'          => __('Tools'),
+			'all_items'          => __('Tool kit'),
 			'view_item'          => __('View Tool'),
 			'search_items'       => __('Search tools'),
 			'not_found'          => __('Tools no found'),
 			'not_found_in_trash' => __('Tools no found in trash'),
 			'parent_item_colon'  => '',
-			'menu_name'          => __('Tools'));
+			'menu_name'          => __('Tool kit'));
 
 		$post_args = array(
 			'labels'             => $post_labels,
