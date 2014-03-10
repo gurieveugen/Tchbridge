@@ -93,19 +93,7 @@
 	<?php
 	}
 	?>
-	<section class="rate-block">
-		<p>Rate how effective you find the <?php the_title(); ?> tool.</p>
-		<div class="cf">
-			<ul class="star-rating">
-				<li class="active"></li>
-				<li class="active"></li>
-				<li class="active"></li>
-				<li class="active"></li>
-				<li></li>
-			</ul>
-			<button type="submit" class="btn"><span>Rate</span></button>
-		</div>
-	</section>
+	<?php echo $GLOBALS['gcrating']->getRateBlock(get_the_ID()); ?>		
 </div>
 	<?php endwhile; ?>
 <?php get_footer(); ?>

@@ -14,7 +14,7 @@
 			<div class="description">
 				<p>This website is a project of Techbridge, a 501(c)(3) nonprofit inspiring girls and underrepresented youth to discover a passion for technology, science, and engineering through hands-on learning and career exploration.</p>
 				<div class="row cf">
-					<a href="<?php echo $theme_options['techbridge_url']; ?>" target="_blank" class="link">techbridge.org</a>
+					<a href="<?php echo $theme_options['techbridge_url']; ?>" target="_blank" class="link">techbridgegirls.org</a>
 					<ul class="f-socials">
 						<li class="twitter"><a href="<?php echo $theme_options['twitter_url']; ?>" target="_blank">twitter</a></li>
 						<li class="facebook"><a href="<?php echo $theme_options['facebook_url']; ?>" target="_blank">facebook</a></li>
