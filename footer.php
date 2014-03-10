@@ -29,10 +29,10 @@
 			<ul class="cf">
 				<li>&copy; 2014 Techbridge</li>
 				<li>
-					<a href="#">Privacy Policy</a>
+					<a href="/privacy-policy/">Privacy Policy</a>
 				</li>
 				<li>
-					<a href="#">Terms of Use</a>
+					<a href="/terms-of-use/">Terms of Use</a>
 				</li>
 			</ul>
 		</div>

@@ -94,7 +94,7 @@
 	}
 	?>
 	<section class="rate-block">
-		<p>Rate how effective you find the Breaking the Ice tool.</p>
+		<p>Rate how effective you find the <?php the_title(); ?> tool.</p>
 		<div class="cf">
 			<ul class="star-rating">
 				<li class="active"></li>
