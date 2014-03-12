@@ -1156,6 +1156,14 @@ a.pink{
 	display:block;
 	margin:0;
 }
+.media iframe,
+.media embed,
+.media object,
+.media img{
+	width:100%;
+	display:block;
+	margin:0;
+}
 /*.media-section .media .btn{
 	position:absolute;
 	left:147px;
@@ -1570,7 +1578,7 @@ a.pink{
 }
 .toolkit-nav{
 	background:#c1d82f;
-	font:14px/14px 'BrandonGrotesqueRg', Arial, Helvetica, sans-serif;
+	font:14px/17px 'BrandonGrotesqueRg', Arial, Helvetica, sans-serif;
 	width: 1024px;
 	height: 110px;
 }
@@ -1593,7 +1601,7 @@ a.pink{
 }
 .toolkit-nav ul a{
 	display:block;
-	padding:22px 9px 0;
+	padding:22px 6px 0;
 	color:#092b40;
 	height:100%;
 }
@@ -1654,6 +1662,12 @@ a.pink{
 	float:left;
 	width:550px;
 	padding:0 0 0 7px;
+}
+#content a{
+	color:#B9106F;
+}
+#content .btn.pink{
+	color:#fff;
 }
 #content ul{
 	padding:0;
