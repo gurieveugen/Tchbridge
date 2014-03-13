@@ -130,6 +130,7 @@ launch_session();
 // =========================================================
 require_once 'includes/page_theme_options.php';
 require_once 'includes/meta_box_additional_options.php';
+require_once 'includes/meta_box_tool_options.php';
 require_once 'includes/post_type_tool.php';
 require_once 'includes/widget_singup.php';
 // =========================================================
