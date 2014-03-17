@@ -13,7 +13,7 @@
 		<input type="hidden" name="redirect_to" value="<?php echo getRegistrationRedirectURL(); ?>"/>
 		<div class="text-center">
 			<button type="submit" class="btn pink big"><span>login</span><i class="pensil"></i></button>
-			<div><a href="/wp-login.php?action=lostpassword"class="pink">Forgot Password</a></div>
+			<div><a href="/wp-login.php?action=lostpassword" class="pink">Forgot Password</a></div>
 		</div>
 	</form>
 </div>
