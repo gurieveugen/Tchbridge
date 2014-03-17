@@ -13,7 +13,36 @@ class ToolOptions{
 		// HOOKS
 		// =========================================================	
 		add_action('add_meta_boxes', array($this, 'metaBoxToolOptions'));
-		add_action('save_post', array($this, 'saveToolOptions'), 0);	
+		add_action('save_post', array($this, 'saveToolOptions'), 0);
+		add_filter('manage_edit-tool_columns', array($this, 'columnPosition'));	
+		add_action('manage_posts_custom_column', array($this, 'columnPositionShow'), 10, 2);
+	}
+
+	/**
+	 * Register new column
+	 * @param  array $columns 
+	 * @return array
+	 */
+	public function columnPosition($columns)
+	{
+		return array_merge($columns, array('position' => __('Position')));
+	}
+
+	/**
+	 * Display new column
+	 * @param  string  $column  
+	 * @param  integer $post_id           
+	 */
+	public function columnPositionShow($column, $post_id)
+	{
+		$position = $this->getOptions($post_id);
+		
+		switch ($column) 
+		{
+			case 'position':
+				echo $position;
+				break;
+		}
 	}
 
 	/**
@@ -34,8 +63,7 @@ class ToolOptions{
 	 */
 	public function metaBoxToolOptionsRender($post)
 	{		
-		$tool_options = get_post_meta($post->ID, 'tool_options', true);	
-		$position     = isset($tool_options['position']) ? $tool_options['position'] : 0;		
+		$position = intval(get_post_meta($post->ID, 'position', true));
 
 		wp_nonce_field( 'tool_options_box', 'tool_options_box_nonce' );
 		?>		
@@ -43,7 +71,7 @@ class ToolOptions{
 			<tbody>
 				<tr>
 					<td><label for="tool_options_external_url"><?php _e('Position'); ?>:</label></td>
-					<td><input style="width: 100%" type="text" name="tool_options[position]" id="tool_options_position" class="w100" style="width: 60%;" value="<?php echo $position; ?>"></td>
+					<td><input style="width: 100%" type="text" name="position" id="tool_options_position" class="w100" style="width: 60%;" value="<?php echo $position; ?>"></td>
 				</tr>				
 			</tbody>
 		</table>		
@@ -79,9 +107,9 @@ class ToolOptions{
 		// =========================================================
 		// Save
 		// =========================================================		
-		if(isset($_POST['tool_options']))
+		if(isset($_POST['position']))
 		{			
-			update_post_meta($post_id, 'tool_options', $_POST['tool_options']);
+			update_post_meta($post_id, 'position', intval($_POST['position']));
 		}
 
 		return $post_id;
@@ -94,7 +122,7 @@ class ToolOptions{
 	 */
 	public function getOptions($id)
 	{
-		return get_post_meta($id, 'tool_options', true);	
+		return get_post_meta($id, 'position', true);	
 	}
 }
 

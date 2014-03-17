@@ -92,7 +92,9 @@ class PostTypeTool{
 		$defaults = array(
 			'posts_per_page'   => intval($options['tools_per_page']),
 			'offset'           => 0,
-			'order'            => 'DESC',
+			'meta_key'         => 'position',
+			'orderby' 		   => 'meta_value_num',
+			'order'            => 'ASC',
 			'post_type'        => 'tool',
 			'post_status'      => 'publish',			
 			'suppress_filters' => true );
