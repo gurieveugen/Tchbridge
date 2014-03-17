@@ -30,6 +30,12 @@ function metaBoxAdditionalOptionsRender($post)
 	?>	
 	<div class="gcslider">				
 		<p>
+			<label for="additional_options_embed_code"><?php _e('Link title ( if you leave this field blank will be displayed DOWNLOAD REPORT )'); ?>:</label>
+			<input type="text" name="additional_options[link_title]" id="additional_options_link_title" class="w100" value="<?php echo $additional_options['link_title']; ?>">
+		</p>	
+	</div>	
+	<div class="gcslider">				
+		<p>
 			<label for="additional_options_embed_code"><?php _e('External url ( PDF )'); ?>:</label>
 			<input type="text" name="additional_options[external_url]" id="additional_options_external_url" class="w100" value="<?php echo $additional_options['external_url']; ?>">
 		</p>	

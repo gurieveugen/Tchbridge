@@ -28,9 +28,9 @@ echo $pagination;
 		while(have_posts())
 		{
 			the_post();
-			$meta = get_post_meta(get_the_ID(), 'additional_options', true);
-			if(isset($meta['external_url']) && $meta['external_url'] != '') $external_url = '<a href="'.esc_url($meta['external_url']).'" class="pink downl-link">Download report</a>';
-			else $external_url = '';
+			$meta         = get_post_meta(get_the_ID(), 'additional_options', true);
+			$link_title   = (isset($meta['link_title']) && $meta['link_title'] != '') ? $meta['link_title'] : 'Download report';
+			$external_url = (isset($meta['external_url']) && $meta['external_url'] != '') ? '<a href="'.esc_url($meta['external_url']).'" class="pink downl-link">'.$link_title.'</a>' : '';
 			?>
 			<article class="post cf <?php post_class(); ?>">
 				<?php if (has_post_thumbnail() AND get_the_post_thumbnail() != "") echo '<a href="'.get_permalink().'" class="image-block">'.get_the_post_thumbnail().'</a>'; ?>				

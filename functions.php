@@ -147,9 +147,17 @@ add_filter('registration_errors', 'custom_registration_errors', 10, 3);
 add_action('user_register', 'custom_user_register');
 add_filter('gettext', 'ts_edit_password_email_text');
 // =========================================================
+// JUST FOR ADMIN
+// =========================================================
+if(is_admin())
+{
+	wp_enqueue_style('admin-styles-theme', TDU.'/css/admin-styles.min.css');
+	wp_enqueue_style('font-awesome-theme', TDU.'/css/font-awesome.min.css');
+}
+// =========================================================
 // JUST FOR THEME
 // =========================================================
-if(!is_admin())
+else
 {
 	wp_enqueue_script('carousel', TDU.'/js/carousel.min.js', array('jquery'));
 }

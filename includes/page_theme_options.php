@@ -86,6 +86,7 @@ class GCOptionsPage{
         add_settings_field('tools_per_page', __('Tools per page'), array($this, 'tools_per_page_callback'), __FILE__, 'default_settings');
         add_settings_field('tools_per_page_dash', __('Tools per page on Dashboard'), array($this, 'tools_per_page_dash_callback'), __FILE__, 'default_settings');
         add_settings_field('take_survey_url', __('Take survey URL'), array($this, 'take_survey_url_callback'), __FILE__, 'default_settings');
+        add_settings_field('hide_check_back_soon', __('Hide "Check back soon for new materials!" box.'), array($this, 'hide_check_back_soon_callback'), __FILE__, 'default_settings');
     }
 
     /**
@@ -97,18 +98,30 @@ class GCOptionsPage{
     {
         $new_input = array();     
 
-        if(isset($input['youtube_video'])) $new_input['youtube_video']             = strip_tags($input['youtube_video']);
-        if(isset($input['techbridge_url'])) $new_input['techbridge_url']           = strip_tags($input['techbridge_url']);
-        if(isset($input['nsf_url'])) $new_input['nsf_url']                         = strip_tags($input['nsf_url']);
-        if(isset($input['twitter_url'])) $new_input['twitter_url']                 = strip_tags($input['twitter_url']);
-        if(isset($input['facebook_url'])) $new_input['facebook_url']               = strip_tags($input['facebook_url']);
-        if(isset($input['designed_by_url'])) $new_input['designed_by_url']         = strip_tags($input['designed_by_url']);
-        if(isset($input['tools_per_page'])) $new_input['tools_per_page']           = intval($input['tools_per_page']);
-        if(isset($input['tools_per_page_dash'])) $new_input['tools_per_page_dash'] = intval($input['tools_per_page_dash']);
-        if(isset($input['take_survey_url'])) $new_input['take_survey_url']         = strip_tags($input['take_survey_url']);
+        if(isset($input['youtube_video'])) $new_input['youtube_video']               = strip_tags($input['youtube_video']);
+        if(isset($input['techbridge_url'])) $new_input['techbridge_url']             = strip_tags($input['techbridge_url']);
+        if(isset($input['nsf_url'])) $new_input['nsf_url']                           = strip_tags($input['nsf_url']);
+        if(isset($input['twitter_url'])) $new_input['twitter_url']                   = strip_tags($input['twitter_url']);
+        if(isset($input['facebook_url'])) $new_input['facebook_url']                 = strip_tags($input['facebook_url']);
+        if(isset($input['designed_by_url'])) $new_input['designed_by_url']           = strip_tags($input['designed_by_url']);
+        if(isset($input['tools_per_page'])) $new_input['tools_per_page']             = intval($input['tools_per_page']);
+        if(isset($input['tools_per_page_dash'])) $new_input['tools_per_page_dash']   = intval($input['tools_per_page_dash']);
+        if(isset($input['take_survey_url'])) $new_input['take_survey_url']           = strip_tags($input['take_survey_url']);
+        if(isset($input['hide_check_back_soon'])) $new_input['hide_check_back_soon'] = (bool) $input['hide_check_back_soon'];
         
 
         return $new_input;
+    }
+
+    /**
+     * Return check text to input control
+     * @param  boolean $bool
+     * @return string
+     */
+    public function checked($bool = false)
+    {
+        if($bool) return 'checked';
+        return '';
     }
 
     /** 
@@ -182,6 +195,16 @@ class GCOptionsPage{
     {
         printf('<input type="text" id="take_survey_url" name="gcoptions[take_survey_url]" value="%s" />', isset($this->options['take_survey_url']) ? $this->options['take_survey_url'] : '');
     }
+
+    /** 
+     * Get the settings option array and print one of its values
+     */
+    public function hide_check_back_soon_callback()
+    {
+        printf('<input type="checkbox" id="hide_check_back_soon" name="gcoptions[hide_check_back_soon]" %s />', isset($this->options['hide_check_back_soon']) ? $this->checked($this->options['hide_check_back_soon'] == 'on') : '');
+    }
+
+
 }
 // =========================================================
 // LAUNCH

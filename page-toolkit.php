@@ -22,10 +22,15 @@ $pages_count    = ceil($count/$tools_per_page);
 			<a href="#" onclick="getTools(); return false;" class="t-box view-box" id="view-more"><strong>+</strong>View More</a>
 			<?php
 		}
-		?>
-		<div class="t-box text-box" id="check-new-materials">
-			<p>Check back <br>soon for new <br>materials!</p>
-		</div>
+		if(!$options['hide_check_back_soon'])
+		{
+			?>
+			<div class="t-box text-box" id="check-new-materials">
+				<p>Check back <br>soon for new <br>materials!</p>
+			</div>
+			<?php
+		}
+		?>		
 	</div>
 	<p>Help us improve!</p>
 	<button class="btn big dark" onclick="window.open('<?php echo $options['take_survey_url']; ?>', '', '');"><span>TAKE SURVEY</span><i class="survey"></i></button>
