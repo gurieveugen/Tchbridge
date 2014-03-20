@@ -142,6 +142,8 @@ add_action('wp_ajax_setanswer', 'setAnswerAJAX');
 add_action('wp_ajax_nopriv_setanswer', 'setAnswerAJAX');
 add_action('wp_ajax_selectdeselectcat', 'selectDeselectCatAJAX');
 add_action('wp_ajax_nopriv_selectdeselectcat', 'selectDeselectCatAJAX');
+add_action('wp_ajax_set_scroll_position', 'setScrollPositionAJAX');
+add_action('wp_ajax_nopriv_set_scroll_position', 'setScrollPositionAJAX');
 add_action('register_form','custom_register_form');
 add_filter('registration_errors', 'custom_registration_errors', 10, 3);
 add_action('user_register', 'custom_user_register');
@@ -403,12 +405,30 @@ function selectDeselectCatAJAX()
 		$json['msg']		 = 'DESELECTED';
 	}
 	$_SESSION['cats_selected'] = $cats_selected;
-
-	// $json['html']       = load_template_part('loop', 'posts');
-	// $json['categories'] = getCategoriesHTML();
+	
 	echo json_encode($json);
 	die();
 }
+
+/**
+ * Set Scrool Position
+ */
+function setScrollPositionAJAX()
+{
+	$_SESSION['scroll_position'] = intval($_POST['position']);		
+	die();
+}
+
+/**
+ * Get scroll position
+ * @return integer
+ */
+function getScrollPosition()
+{	
+	if(isset($_SESSION['scroll_position'])) return max(1, intval($_SESSION['scroll_position']));
+	return 1;
+}
+
 /**
  * Get all dashboard items
  * @param  integer $user_id 

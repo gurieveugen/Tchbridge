@@ -36,7 +36,7 @@
 </nav>
 <div id="main">
 	<div class="main-holder cf">
-		<article id="content">
+		<article id="content" class="toolkit-content">
 			<h1><?php the_title(); ?></h1>
 			<?php the_content(); ?>			
 			<?php wp_link_pages( array( 'before' => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'theme' ) . '</span>', 'after' => '</div>', 'link_before' => '<span>', 'link_after' => '</span>' ) ); ?>

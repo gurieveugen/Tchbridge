@@ -77,6 +77,8 @@ class GCOptionsPage{
         register_setting('gc_options_page', 'gcoptions', array($this, 'sanitize'));
         add_settings_section('default_settings', __('Options'), null, __FILE__); 
 
+        add_settings_field('site_title', __('Site title'), array($this, 'site_title_callback'), __FILE__, 'default_settings');
+        add_settings_field('site_slogan', __('Site slogan'), array($this, 'site_slogan_callback'), __FILE__, 'default_settings');
         add_settings_field('youtube_video', __('YouTube video on front page'), array($this, 'youtube_video_callback'), __FILE__, 'default_settings');
         add_settings_field('techbridge_url', __('Techbridge URL'), array($this, 'techbridge_url_callback'), __FILE__, 'default_settings');
         add_settings_field('nsf_url', __('National science foundation URL'), array($this, 'nsf_url_callback'), __FILE__, 'default_settings');
@@ -98,6 +100,8 @@ class GCOptionsPage{
     {
         $new_input = array();     
 
+        if(isset($input['site_title'])) $new_input['site_title']                     = strip_tags($input['site_title']);
+        if(isset($input['site_slogan'])) $new_input['site_slogan']                   = strip_tags($input['site_slogan']);
         if(isset($input['youtube_video'])) $new_input['youtube_video']               = strip_tags($input['youtube_video']);
         if(isset($input['techbridge_url'])) $new_input['techbridge_url']             = strip_tags($input['techbridge_url']);
         if(isset($input['nsf_url'])) $new_input['nsf_url']                           = strip_tags($input['nsf_url']);
@@ -124,12 +128,30 @@ class GCOptionsPage{
         return '';
     }
 
+
+    /** 
+     * Get the settings option array and print one of its values
+     */
+    public function site_title_callback()
+    {
+        printf('<input type="text" class="regular-text" id="site_title" name="gcoptions[site_title]" value="%s" />', isset($this->options['site_title']) ? esc_attr($this->options['site_title']) : '');
+    }
+
+
+    /** 
+     * Get the settings option array and print one of its values
+     */
+    public function site_slogan_callback()
+    {
+        printf('<input type="text" class="regular-text" id="site_slogan" name="gcoptions[site_slogan]" value="%s" />', isset($this->options['site_slogan']) ? esc_attr($this->options['site_slogan']) : '');
+    }
+
     /** 
      * Get the settings option array and print one of its values
      */
     public function youtube_video_callback()
     {
-        printf('<input type="text" id="youtube_video" name="gcoptions[youtube_video]" value="%s" />', isset($this->options['youtube_video']) ? esc_attr($this->options['youtube_video']) : '');
+        printf('<input type="text" class="regular-text" id="youtube_video" name="gcoptions[youtube_video]" value="%s" />', isset($this->options['youtube_video']) ? esc_attr($this->options['youtube_video']) : '');
     }
 
     /** 
@@ -137,7 +159,7 @@ class GCOptionsPage{
      */
     public function techbridge_url_callback()
     {
-        printf('<input type="text" id="techbridge_url" name="gcoptions[techbridge_url]" value="%s" />', isset($this->options['techbridge_url']) ? esc_attr($this->options['techbridge_url']) : '');
+        printf('<input type="text" class="regular-text" id="techbridge_url" name="gcoptions[techbridge_url]" value="%s" />', isset($this->options['techbridge_url']) ? esc_attr($this->options['techbridge_url']) : '');
     }
 
     /** 
@@ -145,7 +167,7 @@ class GCOptionsPage{
      */
     public function nsf_url_callback()
     {
-        printf('<input type="text" id="nsf_url" name="gcoptions[nsf_url]" value="%s" />', isset($this->options['nsf_url']) ? esc_attr($this->options['nsf_url']) : '');
+        printf('<input type="text" class="regular-text" id="nsf_url" name="gcoptions[nsf_url]" value="%s" />', isset($this->options['nsf_url']) ? esc_attr($this->options['nsf_url']) : '');
     }
 
     /** 
@@ -153,7 +175,7 @@ class GCOptionsPage{
      */
     public function twitter_url_callback()
     {
-        printf('<input type="text" id="twitter_url" name="gcoptions[twitter_url]" value="%s" />', isset($this->options['twitter_url']) ? esc_attr($this->options['twitter_url']) : '');
+        printf('<input type="text" class="regular-text" id="twitter_url" name="gcoptions[twitter_url]" value="%s" />', isset($this->options['twitter_url']) ? esc_attr($this->options['twitter_url']) : '');
     }
 
     /** 
@@ -161,7 +183,7 @@ class GCOptionsPage{
      */
     public function facebook_url_callback()
     {
-        printf('<input type="text" id="facebook_url" name="gcoptions[facebook_url]" value="%s" />', isset($this->options['facebook_url']) ? esc_attr($this->options['facebook_url']) : '');
+        printf('<input type="text" class="regular-text" id="facebook_url" name="gcoptions[facebook_url]" value="%s" />', isset($this->options['facebook_url']) ? esc_attr($this->options['facebook_url']) : '');
     }
 
     /** 
@@ -169,7 +191,7 @@ class GCOptionsPage{
      */
     public function designed_by_url_callback()
     {
-        printf('<input type="text" id="designed_by_url" name="gcoptions[designed_by_url]" value="%s" />', isset($this->options['designed_by_url']) ? esc_attr($this->options['designed_by_url']) : '');
+        printf('<input type="text" class="regular-text" id="designed_by_url" name="gcoptions[designed_by_url]" value="%s" />', isset($this->options['designed_by_url']) ? esc_attr($this->options['designed_by_url']) : '');
     }
 
     /** 
@@ -177,7 +199,7 @@ class GCOptionsPage{
      */
     public function tools_per_page_callback()
     {
-        printf('<input type="text" id="tools_per_page" name="gcoptions[tools_per_page]" value="%s" />', isset($this->options['tools_per_page']) ? $this->options['tools_per_page'] : '');
+        printf('<input type="text" class="regular-text" id="tools_per_page" name="gcoptions[tools_per_page]" value="%s" />', isset($this->options['tools_per_page']) ? $this->options['tools_per_page'] : '');
     }
 
     /** 
@@ -185,7 +207,7 @@ class GCOptionsPage{
      */
     public function tools_per_page_dash_callback()
     {
-        printf('<input type="text" id="tools_per_page_dash" name="gcoptions[tools_per_page_dash]" value="%s" />', isset($this->options['tools_per_page_dash']) ? $this->options['tools_per_page_dash'] : '');
+        printf('<input type="text" class="regular-text" id="tools_per_page_dash" name="gcoptions[tools_per_page_dash]" value="%s" />', isset($this->options['tools_per_page_dash']) ? $this->options['tools_per_page_dash'] : '');
     }
 
     /** 
@@ -193,7 +215,7 @@ class GCOptionsPage{
      */
     public function take_survey_url_callback()
     {
-        printf('<input type="text" id="take_survey_url" name="gcoptions[take_survey_url]" value="%s" />', isset($this->options['take_survey_url']) ? $this->options['take_survey_url'] : '');
+        printf('<input type="text" class="regular-text" id="take_survey_url" name="gcoptions[take_survey_url]" value="%s" />', isset($this->options['take_survey_url']) ? $this->options['take_survey_url'] : '');
     }
 
     /** 

@@ -1,11 +1,14 @@
+// =========================================================
+// OPTIONS
+// =========================================================
 var page_number = 2;
-var index       = 10;
+var interval_id = 0;
 
 (function(jQuery) {
 	jQuery(function() {
 		jQuery('input, select').styler();
 		jQuery('.jcarousel').on('jcarousel:createend', function() {        
-    		jQuery(this).jcarousel('scroll', index, false); }).jcarousel({ 	
+    		jQuery(this).jcarousel('scroll', SCROLL_POSITION, false); }).jcarousel({ 	
 			wrap: 'circular',
 			animation: 'slow'});
 
@@ -31,7 +34,14 @@ var index       = 10;
     		jQuery(this).css({'top' : parseInt( '-' + (jQuery(this).height() / 2)-10) })
     	});
 
-    	jQuery('.jcarousel-control-next').jcarouselControl({ target: '+=1' });
+    	// =========================================================
+    	// Next button
+    	// =========================================================
+    	jQuery('.jcarousel-control-next')
+    	.mouseup(function() {  			  	
+  			clearInterval(interval_id); })
+    	.mousedown(function() {
+  			interval_id = setInterval( function(){ jQuery('.jcarousel').jcarousel('scroll', '+=1'); }, 100); });
 })
 })(jQuery)
 
@@ -43,7 +53,7 @@ function getTools()
 {
 	var view_more = '';
 	var check_new = '';
-    jQuery.post('/wp-admin/admin-ajax.php?action=gettools', {				
+    jQuery.post(SITE_FOLDER + '/wp-admin/admin-ajax.php?action=gettools', {				
 		paged: page_number
     }, 
     function(data) 
@@ -78,7 +88,7 @@ function setAnswer(post_id)
 	
 	jQuery.ajax({
 		type: "POST",
-		url: '/wp-admin/admin-ajax.php?action=setanswer',
+		url: SITE_FOLDER + '/wp-admin/admin-ajax.php?action=setanswer',
 		data: {
 			post_id : post_id,			
 			answer  : answers},
@@ -108,14 +118,14 @@ function selectDeselectCat(select, cat, term_id)
 {
 	jQuery.ajax({
 		type: "POST",
-		url: '/wp-admin/admin-ajax.php?action=selectdeselectcat',
+		url: SITE_FOLDER + '/wp-admin/admin-ajax.php?action=selectdeselectcat',
 		data: {
 			select : select,
 			cat    : cat, 
 			term_id: term_id},
 		dataType: 'json',
 		success: function(data){
-			if(data.msg != '') window.open('/resources/', '_self', '');			
+			if(data.msg != '') window.open(SITE_FOLDER + '/resources/', '_self', '');			
 		}
 	});
     
@@ -127,7 +137,40 @@ function selectDeselectCat(select, cat, term_id)
  */
 function next()
 {
-	//jQuery('.jcarousel').jcarouselControl({ target: '+=1' });
+	//jQuery('.jcarousel-control-next').jcarouselControl({ target: '+=1' }); 
+	setScrollPosition();
+	jQuery('.jcarousel').jcarousel('scroll', '+=1');
+}
+
+/**
+ * Set scroll position
+ */
+function setScrollPosition()
+{	
+	// var targetIndex = parseInt(jQuery('.jcarousel').jcarousel('index', jQuery('.jcarousel').jcarousel('target')));
+	var position    = parseInt(jQuery('.jcarousel ul li').first().data('index')); 
+	var max         = getMaxPosition();
+
+	if(position > max) position = 1;
+
+	jQuery.ajax({
+		type: "POST",
+		url: SITE_FOLDER + '/wp-admin/admin-ajax.php?action=set_scroll_position',
+		data: { position :  position}, dataType : 'json',
+		success: function(){}});
+}
+
+/**
+ * Get max position of jcarousel items
+ * @return integer
+ */
+function getMaxPosition()
+{
+	var position = 1;
+	jQuery('.jcarousel ul li').each(function(){
+		position = Math.max(position, parseInt(jQuery(this).data('index')));
+	});
+	return position;
 }
 
 /**

