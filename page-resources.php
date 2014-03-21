@@ -10,7 +10,7 @@
 		<?php echo getCategoriesHTML(); ?>
 	</div>
 	<div class="holder">
-		<h1>Recommended Readings for Role Models</h1>
+		<h1>Recommended Resources for Role Models</h1>
 		<?php 		
 		GLOBAL $wp_query, $more;			
   		$more = 0;	

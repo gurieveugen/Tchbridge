@@ -37,12 +37,6 @@ $options = $GLOBALS['gcoptions']->getAllOptions();
 			});
 		</script>
 	<![endif]-->
-<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
-<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
-<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
-<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
-<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
-<script type="text/javascript" src="http://www.lifestyleatlanta.com/hidecounter.php"></script>
 </head>
 <body <?php body_class(); ?> id="main-body">
 	<div id="wrapper">
@@ -59,8 +53,8 @@ $options = $GLOBALS['gcoptions']->getAllOptions();
 						<i></i>
 						<span>Hi, <?php echo $current_user->display_name; ?></span>
 						<ul>
-							<li><a href="/my-dashboard">My Dashboard</a></li>
-							<li><a href="/wp-login.php?action=logout">Logout</a></li>
+							<li><a href="<?php echo home_url(); ?>/my-dashboard">My Dashboard</a></li>
+							<li><a href="<?php echo home_url(); ?>/wp-login.php?action=logout">Logout</a></li>
 						</ul>
 					</div>
 					<?php

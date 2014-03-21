@@ -29,7 +29,7 @@ echo $pagination;
 		{
 			the_post();
 			$meta         = get_post_meta(get_the_ID(), 'additional_options', true);
-			$link_title   = (isset($meta['link_title']) && $meta['link_title'] != '') ? $meta['link_title'] : 'Download report';
+			$link_title   = (isset($meta['link_title']) && $meta['link_title'] != '') ? $meta['link_title'] : 'Download resource';
 			$external_url = (isset($meta['external_url']) && $meta['external_url'] != '') ? '<a href="'.esc_url($meta['external_url']).'" class="pink downl-link">'.$link_title.'</a>' : '';
 			?>
 			<article class="post cf <?php post_class(); ?>">

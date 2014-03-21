@@ -21,7 +21,7 @@ $youtube    = get_post_meta(get_the_ID(), 'youtube', true);
 	<article>
 		<h1><?php the_title(); ?></h1>		
 		<?php the_content(); ?>
-		<a href="/toolkit" class="btn big"><span>view toolkit</span><i class="tool"></i></a>
+		<a href="<?php echo home_url(); ?>/toolkit" class="btn big"><span>view toolkit</span><i class="tool"></i></a>
 	</article>
 </section>
 <section class="info-section">
@@ -37,7 +37,7 @@ $youtube    = get_post_meta(get_the_ID(), 'youtube', true);
 		<div class="column wide">
 			<img src="<?php echo TDU; ?>/images/ico-tools.png" alt="image description" class="icon">
 			<div class="holder">
-				<h4><a href="/toolkit">Check out the Toolkit</a></h4>
+				<h4><a href="<?php echo home_url(); ?>/toolkit">Check out the Toolkit</a></h4>
 				<p>Through readings, videos, questions and more, this toolkit will help prepare you to be a STEM role model.</p>
 			</div>
 		</div>

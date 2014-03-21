@@ -1696,8 +1696,17 @@ a.pink{
 	margin:0 0 22px;
 	list-style:none;
 }
+#content.toolkit-content h3,
+#content.toolkit-content h4
+#content.toolkit-content h5
+#content.toolkit-content h6{
+	margin:0 0 22px;
+}
 #content.toolkit-content ul{
 	margin:-22px 0 22px;
+}
+#content.toolkit-content ul ul{
+	margin:0;
 }
 #content ul li{
 	background:url(images/bg-list.png) no-repeat 0 9px;
@@ -1777,13 +1786,17 @@ h3{
 	background:url(images/ico-socials.png) no-repeat;
 	text-indent:-9999px;
 	overflow:hidden;
+	width:30px;
+	height:30px;
 }
-.socials .twitter a{background-position:-2px -35px;width:26px;height:19px;}
-.socials .twitter a:hover{background-position:-2px -5px;width:26px;height:19px;}
-.socials .facebook a{background-position:-39px -33px;width:11px;height:23px;}
-.socials .facebook a:hover{background-position:-39px -3px;width:11px;height:23px;}
-.socials .rss a{background-position:-67px -34px;width:15px;height:21px;}
-.socials .rss a:hover{background-position:-67px -4px;width:15px;height:21px;}
+.socials .twitter a{background-position:0 -30px;}
+.socials .twitter a:hover{background-position:0 0;}
+.socials .facebook a{background-position:-30px -30px;}
+.socials .facebook a:hover{background-position:-30px 0;}
+.socials .rss a{background-position:-60px -30px;}
+.socials .rss a:hover{background-position:-60px 0;}
+.socials .linked_in a{background-position:-90px -30px;}
+.socials .linked_in a:hover{background-position:-90px 0;}
 .question-block{
 	padding:32px 410px 32px 8px;
 	border-top:1px solid #ccc;
