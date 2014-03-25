@@ -3,7 +3,7 @@
 		<h2>Sign In</h2>
 		<a href="#" onclick="showHide(true, ['#sign-up', '.lightbox-mask']); return false;">I need to sign up</a>
 	</div>
-	<form action="/wp-login.php" method="post" name="loginform" class="form-sign form-sign-in">
+	<form action="<?php bloginfo('url'); ?>/wp-login.php" method="post" name="loginform" class="form-sign form-sign-in">
 		<span class="input person">
 			<input type="text" placeholder="Username" name="log">
 		</span>
@@ -23,7 +23,7 @@
 		<h5>To track progress, save and share responses.</h5>
 		<p>Already have an account?<br><a href="#" onclick="showHide(true, ['#sign-in', '.lightbox-mask']); return false;">Sign In</a></p>
 	</div>
-	<form action="http://site10.miydim.com/wp-login.php?action=register" method="post" class="form-sign form-sign-up">
+	<form action="<?php bloginfo('url'); ?>/wp-login.php?action=register" method="post" class="form-sign form-sign-up">
 		<span class="input person">
 			<input type="text" placeholder="Full Name" name="full_name">
 		</span>

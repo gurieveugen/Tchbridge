@@ -58,7 +58,8 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 								</div>
 								<div class="aside buttons">
 									<button class="btn pink mini" onclick="window.open('<?php echo get_permalink($value->ID); ?>', '_self', '');"><span>edit</span><i class="pensil"></i></button>
-									<button class="btn mini" onclick="window.open('mailto:<?php echo $mailto;?>', '_self', '');"><span>email</span><i class="mail"></i></button>								
+									<button class="btn mini" onclick="window.open('mailto:<?php echo $mailto;?>', '_self', '');"><span>email</span><i class="mail"></i></button>	
+						
 								</div>
 							</div>
 						</div>
@@ -70,7 +71,9 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 				<div class="button-columns cf">
 					<div class="column">
 						<h2>Send my responses!</h2>
-						<a class="btn big" href="mailto:<?php echo $all_responses;?>"><span>email</span><i class="mail"></i></a>
+						
+						<!-- Original Email Button <a class="btn big" href="mailto:<?php echo $all_responses;?>"><span>email</span><i class="mail"></i></a> -->
+						<a class="btn big st_email_custom" st_summary="Email Body Copy Goes Here"><span>email</span><i class="mail"></i></a>
 					</div>
 					<div class="column">
 						<h2>Help us improve!</h2>
@@ -80,4 +83,3 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 			</div>
 		</div>
 <?php get_footer(); 
-

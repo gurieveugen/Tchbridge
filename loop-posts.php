@@ -2,14 +2,14 @@
 
 GLOBAL $wp_query;
 
-$cats_selected = '';
-if(is_array($_SESSION['cats_selected']))
-{
-	$cats_selected = $_SESSION['cats_selected'];
-	$cats_selected = array_keys($cats_selected);
-	$cats_selected = implode(', ', $cats_selected);
-}
-$wp_query->query_vars['category_name'] = $cats_selected;
+// $cats_selected = '';
+// if(is_array($_SESSION['cats_selected']))
+// {
+// 	$cats_selected = $_SESSION['cats_selected'];
+// 	$cats_selected = array_keys($cats_selected);
+// 	$cats_selected = implode(', ', $cats_selected);
+// }
+// $wp_query->query_vars['category_name'] = $cats_selected;
 
 if($_GET['display'] == 'all')
 {		
@@ -33,7 +33,7 @@ echo $pagination;
 			$external_url = (isset($meta['external_url']) && $meta['external_url'] != '') ? '<a href="'.esc_url($meta['external_url']).'" class="pink downl-link">'.$link_title.'</a>' : '';
 			?>
 			<article class="post cf <?php post_class(); ?>">
-				<?php if (has_post_thumbnail() AND get_the_post_thumbnail() != "") echo '<a href="'.get_permalink().'" class="image-block">'.get_the_post_thumbnail().'</a>'; ?>				
+				<?php if (has_post_thumbnail() AND get_the_post_thumbnail() != "") echo '<div class="image-block">'.get_the_post_thumbnail().'</div>'; ?>				
 				<div class="text">
 					<h2><?php the_title(); ?></h2>
 					<p><?php the_content(' '); ?></p>

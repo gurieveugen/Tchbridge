@@ -24,6 +24,9 @@ $options = $GLOBALS['gcoptions']->getAllOptions();
 		var SITE_FOLDER     = '<?PHP bloginfo('siteurl'); ?>';
 		var SCROLL_POSITION = <?php echo getScrollPosition(); ?>;
 	</script>
+	<script type="text/javascript">var switchTo5x=true;</script>
+	<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+	<script type="text/javascript">stLight.options({publisher: "ea3d8011-15bf-45e2-aaec-713ec3d1414e", onhover: false, doNotHash: true, doNotCopy: true, hashAddressBar: false });</script>
 	<!--[if lt IE 9]>
 		<script type="text/javascript" src="<?php echo TDU; ?>/js/html5.js"></script>
 		<script type="text/javascript" src="<?php echo TDU; ?>/js/pie.js"></script>

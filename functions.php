@@ -148,6 +148,7 @@ add_action('register_form','custom_register_form');
 add_filter('registration_errors', 'custom_registration_errors', 10, 3);
 add_action('user_register', 'custom_user_register');
 add_filter('gettext', 'ts_edit_password_email_text');
+add_filter('wp_list_categories', 'replaceCategoryCSSClass');
 // =========================================================
 // JUST FOR ADMIN
 // =========================================================
@@ -177,6 +178,18 @@ function getRegistrationRedirectURL()
 		return $_SERVER['HTTP_REFERER'];
 	}
     return get_bloginfo('url');
+}
+
+/**
+ * Replace Categories css class
+ * @param  string $list
+ * @return string      
+ */
+function replaceCategoryCSSClass($list)
+{
+	$list = str_replace('cat-item', 'deselect', $list);
+	$list = str_replace('current-cat', 'active', $list);
+	return $list;
 }
 
 /**
@@ -279,7 +292,6 @@ function getPagination($total = -1)
 				$str   .= '<li>'.$value.'</li>';
 			}	
 		}
-		//$str.= '<li class="link-all active"><span>view all</span></li></ul></div>';
 		$str.= '</ul></div>';
 	}
 	else
