@@ -11,6 +11,8 @@ GLOBAL $wp_query;
 // }
 // $wp_query->query_vars['category_name'] = $cats_selected;
 
+$target = array('_blank', '_self');
+
 if($_GET['display'] == 'all')
 {		
 	$wp_query->query_vars['posts_per_page'] = 500;	
@@ -30,7 +32,7 @@ echo $pagination;
 			the_post();
 			$meta         = get_post_meta(get_the_ID(), 'additional_options', true);
 			$link_title   = (isset($meta['link_title']) && $meta['link_title'] != '') ? $meta['link_title'] : 'Download resource';
-			$external_url = (isset($meta['external_url']) && $meta['external_url'] != '') ? '<a href="'.esc_url($meta['external_url']).'" class="pink downl-link">'.$link_title.'</a>' : '';
+			$external_url = (isset($meta['external_url']) && $meta['external_url'] != '') ? '<a href="'.esc_url($meta['external_url']).'" target="'.$target[intval($meta['open_in'])].'" class="pink downl-link">'.$link_title.'</a>' : '';
 			?>
 			<article class="post cf <?php post_class(); ?>">
 				<?php if (has_post_thumbnail() AND get_the_post_thumbnail() != "") echo '<div class="image-block">'.get_the_post_thumbnail().'</div>'; ?>				

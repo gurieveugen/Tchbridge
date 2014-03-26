@@ -39,6 +39,16 @@ function metaBoxAdditionalOptionsRender($post)
 			<label for="additional_options_embed_code"><?php _e('External url ( PDF )'); ?>:</label>
 			<input type="text" name="additional_options[external_url]" id="additional_options_external_url" class="w100" value="<?php echo $additional_options['external_url']; ?>">
 		</p>	
+	</div>		
+	<div class="gcslider">				
+		<p>
+			<label for="additional_options_embed_code"><?php _e('Open in'); ?>:</label>
+			<select name="additional_options[open_in]" id="additional_options_open_in" class="w100">
+				<option value="0" <?php selected(intval($additional_options['open_in']) == 0); ?>><?php _e('New tab'); ?></option>
+				<option value="1" <?php selected(intval($additional_options['open_in']) == 1); ?>><?php _e('Current tab'); ?></option>
+			</select>
+			
+		</p>	
 	</div>	
 	<?php
 }

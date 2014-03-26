@@ -7,7 +7,7 @@
 <?php get_header(); ?>
 	<?php while ( have_posts() ) : the_post(); ?>
 <nav class="toolkit-nav cf">
-	<div class="jcarousel jquery-toolkit">		
+	<div class="jquery-toolkit">		
 		<ul>
 			<?php
 			$tools     = $GLOBALS['post_type_tool']->getTools(array('posts_per_page' => 500));
@@ -32,7 +32,7 @@
 			?>			
 		</ul>
 	</div>
-	<a href="#" onclick="next(); return false;" class="btn-next jcarousel-control-next">next</a>
+	<a href="#" class="btn-next jquery-toolkit-next">next</a>
 </nav>
 <div id="main">
 	<div class="main-holder cf">

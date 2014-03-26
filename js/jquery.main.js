@@ -7,11 +7,7 @@ var interval_id = 0;
 (function(jQuery) {
 	jQuery(function() {
 		jQuery('input, select').styler();
-		jQuery('.jcarousel').on('jcarousel:createend', function() {        
-    		jQuery(this).jcarousel('scroll', SCROLL_POSITION, false); }).jcarousel({ 	
-			wrap: 'circular',
-			animation: 'slow'});
-
+		
     	jQuery('.lightbox-mask').click(function(event){
     		event.stopPropagation();
     		showHide(false, ['']);
@@ -32,16 +28,34 @@ var interval_id = 0;
     	});
     	jQuery('.question-text .ico-info .box').each(function(){
     		jQuery(this).css({'top' : parseInt( '-' + (jQuery(this).height() / 2)-10) })
-    	});
+    	});    	
+
+    	// =========================================================
+    	// Slider
+    	// =========================================================
+		var jcarousel = jQuery('.jquery-toolkit');
+
+	    jcarousel.on('jcarousel:reload jcarousel:create', function () {
+				jcarousel.jcarousel('items').width(105);
+				jcarousel.jcarousel('scroll', SCROLL_POSITION, false);  }).jcarousel({
+	                wrap: 'circular',                
+	                animation: {
+	                        duration: 800,
+	                        easing:   'linear',
+	                        complete: function() {
+	                        }
+	                    }
+	            });
 
     	// =========================================================
     	// Next button
     	// =========================================================
-    	jQuery('.jcarousel-control-next')
+    	jQuery('.jquery-toolkit-next')
     	.mouseup(function() {  			  	
-  			clearInterval(interval_id); })
+  			clearInterval(interval_id);
+  			setScrollPosition(); })
     	.mousedown(function() {
-  			interval_id = setInterval( function(){ jQuery('.jcarousel').jcarousel('scroll', '+=1'); }, 100); });
+  			interval_id = setInterval( function(){ jQuery('.jquery-toolkit').jcarousel('scroll', '+=1'); }, 100); });
 })
 })(jQuery)
 
@@ -148,7 +162,7 @@ function next()
 function setScrollPosition()
 {	
 	// var targetIndex = parseInt(jQuery('.jcarousel').jcarousel('index', jQuery('.jcarousel').jcarousel('target')));
-	var position    = parseInt(jQuery('.jcarousel ul li').first().data('index')); 
+	var position    = parseInt(jQuery('.jquery-toolkit ul li').first().data('index')); 
 	var max         = getMaxPosition();
 
 	if(position > max) position = 1;
@@ -167,7 +181,7 @@ function setScrollPosition()
 function getMaxPosition()
 {
 	var position = 1;
-	jQuery('.jcarousel ul li').each(function(){
+	jQuery('.jquery-toolkit ul li').each(function(){
 		position = Math.max(position, parseInt(jQuery(this).data('index')));
 	});
 	return position;

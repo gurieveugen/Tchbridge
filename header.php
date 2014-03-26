@@ -11,6 +11,8 @@ $options = $GLOBALS['gcoptions']->getAllOptions();
 <html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
+
+	
 	<title><?php  echo (wp_title(' ', false, 'right') != '') ? wp_title(' ', false, 'right') : 'Home'; ?></title>
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />

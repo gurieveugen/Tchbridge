@@ -8,7 +8,8 @@
 get_header(); 
 $items               = getDashboardItems($current_user->ID);
 $items_count         = count($items);
-$all_responses       = $current_user->user_email.'?subject='.rawurlencode('All responses').'&body=';
+//$all_responses       = $current_user->user_email.'?subject='.rawurlencode('All responses').'&body=';
+$all_responses 		 = ''; 
 $theme_options       = $GLOBALS['gcoptions']->getAllOptions();
 $tools_per_page_dash = intval($theme_options['tools_per_page_dash']);
 $paged               = max(1, intval(get_query_var('paged')))-1;
@@ -45,15 +46,15 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 								<div class="content">
 
 									<?php 
-									$all_responses .= strip_tags($value->post_title).rawurlencode("\n");
+									$all_responses .= strip_tags($value->post_title)."\n";
 									foreach ($value->meta['question'] as $key2 => $value2) 
 									{
 										echo '<h4>'.$value2.'</h4>';
 										echo '<p>'.$value->answer[$key2].'</p>';
 										$mailto        .= rawurlencode($value2.' '.$value->answer[$key2]."\n");
-										$all_responses .= rawurlencode($value2.' '.$value->answer[$key2]."\n");
+										$all_responses .= $value2.' '.$value->answer[$key2]."\n";
 									}	
-									$all_responses .= rawurlencode("\n\n");								
+									$all_responses .= rawurlencode("\n\n");														
 									?>									
 								</div>
 								<div class="aside buttons">
@@ -73,7 +74,7 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 						<h2>Send my responses!</h2>
 						
 						<!-- Original Email Button <a class="btn big" href="mailto:<?php echo $all_responses;?>"><span>email</span><i class="mail"></i></a> -->
-						<a class="btn big st_email_custom" st_summary="Email Body Copy Goes Here"><span>email</span><i class="mail"></i></a>
+						<a class="btn big st_email_custom" st_title="All responses"><span>email</span><i class="mail"></i></a>
 					</div>
 					<div class="column">
 						<h2>Help us improve!</h2>
