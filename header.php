@@ -18,6 +18,7 @@ $options = $GLOBALS['gcoptions']->getAllOptions();
 	<link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
 	<link media="all" rel="stylesheet" type="text/css" href="<?php echo TDU; ?>/css/jquery.formstyler.css" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+	<link rel="icon" type="image/png" href="<?php echo TDU; ?>/images/favicon.png" />
 	<?php if ( is_singular() && get_option( 'thread_comments' ) ) wp_enqueue_script( 'comment-reply' ); 
 		wp_head(); ?>
 	<script type="text/javascript" src="<?php echo TDU; ?>/js/jquery.formstyler.min.js" ></script>
@@ -59,7 +60,7 @@ $options = $GLOBALS['gcoptions']->getAllOptions();
 						<span>Hi, <?php echo $current_user->display_name; ?></span>
 						<ul>
 							<li><a href="<?php echo home_url(); ?>/my-dashboard">My Dashboard</a></li>
-							<li><a href="<?php echo home_url(); ?>/wp-login.php?action=logout">Logout</a></li>
+							<li><a href="<?php echo get_bloginfo('url').'/log-out?redirect_to='.getRegistrationRedirectURL(); ?>">Logout</a></li>
 						</ul>
 					</div>
 					<?php

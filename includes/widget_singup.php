@@ -19,11 +19,13 @@ class SignUpWidget extends WP_Widget {
 	function widget( $args, $instance ) 
 	{
 		extract($args);
-
-		echo $before_widget;
-		echo '<a href="#" class="btn big pink wide" onclick="showHide(true, [\'#sign-up\', \'.lightbox-mask\']); return false;"><span>'.$instance['text_btn'].'</span> <i class="pensil"></i></a>';
-		echo '<p>'.$instance['text_below'].'</p>';
-		echo $after_widget;
+		if(!is_user_logged_in())
+		{
+			echo $before_widget;
+			echo '<a href="#" class="btn big pink wide" onclick="showHide(true, [\'#sign-up\', \'.lightbox-mask\']); return false;"><span>'.$instance['text_btn'].'</span> <i class="pensil"></i></a>';
+			echo '<p>'.$instance['text_below'].'</p>';
+			echo $after_widget;	
+		}		
 	}
 
 	function form($instance) 

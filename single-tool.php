@@ -67,14 +67,8 @@
 						<?php
 					}
 					echo '</p>';
-					if(!is_user_logged_in())
-					{
-						?>
-						<p><a href="#" onclick="showHide(true, ['#sign-in', '.lightbox-mask'], this);" class="pink">Sign in</a> to save your response</p>
-						<?php
-					}
-					else
-					{
+					if(is_user_logged_in())
+					{						
 						?>
 						<textarea name="answers[<?php echo $key; ?>]" data-id="<?php echo $key; ?>" class="answer"><?php echo $answer[$key]; ?></textarea>
 						<?php
@@ -87,6 +81,22 @@
 				<button class="btn pink" ><span>SAVE</span></button>
 				<?php 
 			}	
+			else
+			{
+				$count_meta = count($meta['question']);
+				if($count_meta > 1)
+				{
+					?>
+					<p><a href="#" onclick="showHide(true, ['#sign-in', '.lightbox-mask'], this);" class="pink">Sign in</a> to save your responses</p>
+					<?php
+				}
+				else
+				{					
+					?>
+					<p><a href="#" onclick="showHide(true, ['#sign-in', '.lightbox-mask'], this);" class="pink">Sign in</a> to save your response</p>
+					<?php
+				}
+			}
 			?>
 		</form>
 	</section>

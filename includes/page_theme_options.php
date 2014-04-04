@@ -28,8 +28,14 @@ class GCOptionsPage{
     // /_/ /_/ /_/\___/\__/_/ /_/\____/\__,_/____/
     public function __construct()
     {
-        add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
-        add_action( 'admin_init', array( $this, 'page_init' ) );
+        add_action('admin_menu', array( $this, 'add_plugin_page'));
+        add_action('admin_init', array( $this, 'page_init'));
+
+        $options  = $this->getAllOptions();
+        $interval = intval($options['slider_interval']);
+        $interval = max(1, $interval);
+
+        wp_localize_script('slider', 'slider_object', array('interval' => $interval));
     }
 
     /**
@@ -89,6 +95,7 @@ class GCOptionsPage{
         add_settings_field('tools_per_page_dash', __('Tools per page on Dashboard'), array($this, 'tools_per_page_dash_callback'), __FILE__, 'default_settings');
         add_settings_field('take_survey_url', __('Take survey URL'), array($this, 'take_survey_url_callback'), __FILE__, 'default_settings');
         add_settings_field('hide_check_back_soon', __('Hide "Check back soon for new materials!" box.'), array($this, 'hide_check_back_soon_callback'), __FILE__, 'default_settings');
+        add_settings_field('slider_interval', __('Slider interval animation (seconds)'), array($this, 'slider_interval_callback'), __FILE__, 'default_settings');
     }
 
     /**
@@ -112,6 +119,7 @@ class GCOptionsPage{
         if(isset($input['tools_per_page_dash'])) $new_input['tools_per_page_dash']   = intval($input['tools_per_page_dash']);
         if(isset($input['take_survey_url'])) $new_input['take_survey_url']           = strip_tags($input['take_survey_url']);
         if(isset($input['hide_check_back_soon'])) $new_input['hide_check_back_soon'] = (bool) $input['hide_check_back_soon'];
+        if(isset($input['slider_interval'])) $new_input['slider_interval']           = intval($input['slider_interval']);
         
 
         return $new_input;
@@ -226,6 +234,13 @@ class GCOptionsPage{
         printf('<input type="checkbox" id="hide_check_back_soon" name="gcoptions[hide_check_back_soon]" %s />', isset($this->options['hide_check_back_soon']) ? $this->checked($this->options['hide_check_back_soon'] == 'on') : '');
     }
 
+    /** 
+     * Get the settings option array and print one of its values
+     */
+    public function slider_interval_callback()
+    {
+        printf('<input type="text" class="regular-text" id="slider_interval" name="gcoptions[slider_interval]" value="%s" />', isset($this->options['slider_interval']) ? $this->options['slider_interval'] : 0);
+    }
 
 }
 // =========================================================

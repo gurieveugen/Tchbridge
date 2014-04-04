@@ -46,7 +46,7 @@
 		<h1 class="archive-title">
 		<?php global $post;
 			if (is_category()):
-				printf( __( 'Category Archives: %s', 'theme' ), single_cat_title( '', false ) );
+				
 			elseif( is_tag() ):
 				printf( __( 'Tag Archives: %s', 'theme' ), single_tag_title( '', false ) );
 			elseif ( is_day() ) :

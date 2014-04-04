@@ -35,7 +35,7 @@ echo $pagination;
 			$external_url = (isset($meta['external_url']) && $meta['external_url'] != '') ? '<a href="'.esc_url($meta['external_url']).'" target="'.$target[intval($meta['open_in'])].'" class="pink downl-link">'.$link_title.'</a>' : '';
 			?>
 			<article class="post cf <?php post_class(); ?>">
-				<?php if (has_post_thumbnail() AND get_the_post_thumbnail() != "") echo '<div class="image-block">'.get_the_post_thumbnail().'</div>'; ?>				
+				<?php if (has_post_thumbnail()) echo '<div class="image-block">'.get_the_post_thumbnail(get_the_id(), 'category_post_thumb').'</div>'; ?>				
 				<div class="text">
 					<h2><?php the_title(); ?></h2>
 					<p><?php the_content(' '); ?></p>

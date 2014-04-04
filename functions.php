@@ -145,10 +145,16 @@ add_action('wp_ajax_nopriv_selectdeselectcat', 'selectDeselectCatAJAX');
 add_action('wp_ajax_set_scroll_position', 'setScrollPositionAJAX');
 add_action('wp_ajax_nopriv_set_scroll_position', 'setScrollPositionAJAX');
 add_action('register_form','custom_register_form');
+add_action('user_register', 'signInAfterSignUp');
+if (!is_user_logged_in()) 
+{    
+	add_action('init', 'loginInitAJAX');
+}
 add_filter('registration_errors', 'custom_registration_errors', 10, 3);
 add_action('user_register', 'custom_user_register');
 add_filter('gettext', 'ts_edit_password_email_text');
 add_filter('wp_list_categories', 'replaceCategoryCSSClass');
+add_filter( 'show_admin_bar' , 'adminBarJustForAdmins');
 // =========================================================
 // JUST FOR ADMIN
 // =========================================================
@@ -168,16 +174,35 @@ else
 // METHODS
 // =========================================================
 /**
+ * Admin bar just for admin
+ * @return boolean
+ */
+function adminBarJustForAdmins()
+{
+	if(is_admin() || is_super_admin()) return true;
+	return false;
+}
+
+/**
+ * Sign in after Sign up
+ * @param  [type] $user_id [description]
+ * @return [type]          [description]
+ */
+function signInAfterSignUp($user_id) 
+{
+    wp_set_current_user( $user_id );
+    wp_set_auth_cookie( $user_id, false, is_ssl() );
+}
+
+/**
  * Redirect after succes registration
  * @return string
  */
 function getRegistrationRedirectURL()
 {
-	if(strpos($_SERVER['HTTP_REFERER'], get_bloginfo('url')))
-	{
-		return $_SERVER['HTTP_REFERER'];
-	}
-    return get_bloginfo('url');
+	$url = 'http://'.$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
+	if(strpos($url, get_bloginfo('url')) < 0) $url = get_bloginfo('url');
+    return $url;
 }
 
 /**
@@ -327,6 +352,9 @@ function getDashPagination($total, $per_page)
 	$end_block   = '';
 	$middle      = '';
 	$current     = max(1, intval(get_query_var('paged')));
+
+	if($pages <= 1) return '';
+	
 	if(isset($_GET) && $_GET['display'] == 'all')
 	{
 		$current    = 9999999999;
@@ -336,6 +364,7 @@ function getDashPagination($total, $per_page)
 	{
 		$end_block .= '<li class="link-all"><a href="'.preg_replace('/\?.*/', '', get_pagenum_link('1')).'?display=all">view all</a></li></ul></div>';
 	}
+	
 	for ($i=1; $i <= $pages; $i++) 
 	{ 
 		$url    = sprintf($base, $i);
@@ -374,6 +403,153 @@ function getCategoriesHTML()
 	}
 	return $str;
 }
+
+/**
+ * Init login AJAX
+ */
+function loginInitAJAX()
+{	
+    wp_localize_script('carousel', 'ajax_login_object', array( 
+		'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+		'redirecturl'    => getRegistrationRedirectURL(),
+		'loadingmessage' => __('Sending user info, please wait...')
+    ));
+    
+    add_action('wp_ajax_nopriv_loginajax', 'loginAJAX');
+    add_action('wp_ajax_nopriv_registrationajax', 'registrationAJAX');
+    add_action('wp_ajax_nopriv_lostpasswordajax', 'lostPasswordAJAX');
+}
+
+/**
+ * Login AJAX
+ */
+function loginAJAX()
+{
+	check_ajax_referer( 'ajax-login-nonce', 'security' );
+
+	$info                  = array();
+	$info['user_login']    = $_POST['log'];
+	$info['user_password'] = $_POST['pwd'];
+	$info['remember']      = true;
+	$user_signon           = wp_signon( $info, false );
+
+	if ( is_wp_error($user_signon) )
+	{
+		$json['loggedin'] = false;
+		$json['message']  = __('The password you entered is incorrect.');	    
+	} 
+	else 
+	{
+		$json['loggedin']    = true;
+		$json['message']     = __('Login successful, redirecting...');	  
+		$json['redirect_to'] = get_user_meta($user_signon->ID, 'default_url', true);  
+	}
+
+	echo json_encode($json);
+	die();
+}
+
+/**
+ * Registration AJAX
+ */
+function registrationAJAX()
+{
+	check_ajax_referer('ajax-registration-nonce', 'security');
+
+	$user_id = wp_create_user( $_POST['log'], $_POST['pwd'], $_POST['email']); 
+	if(is_wp_error($user_id))
+	{
+		$json['registered'] = false;
+		$json['message']    = $user_id->get_error_message();
+	}
+	else
+	{
+		if(isset($_POST['fullname'])) update_user_meta($user_id, 'fullname', $_POST['fullname']);
+    	if(isset($_POST['employment'])) update_user_meta($user_id, 'employment', $_POST['employment']);
+
+    	wp_set_current_user($user_id);
+    	wp_set_auth_cookie($user_id, false, is_ssl());
+
+    	$json['registered'] = true;
+		$json['message']    = __('Registration successful, redirecting...');
+	}
+
+	echo json_encode($json);
+	die();
+}
+
+/**
+ * Renew losted password
+ */
+function lostPasswordAJAX()
+{
+	check_ajax_referer('ajax-renew-nonce', 'security');
+	global $wpdb;
+	
+	$error   = '';
+	$success = '';
+
+	$email = trim($_POST['email']);
+
+	if(empty($email)) 
+	{
+		$error = 'Enter a e-mail address..';
+	} 
+	else if(!is_email($email)) 
+	{
+		$error = 'Invalid e-mail address.';
+	} 
+	else if(!email_exists($email))
+	{
+		$error = 'There is no user registered with that email address.';
+	} 
+	else 
+	{	
+		$random_password = wp_generate_password( 12, false );
+		$user            = get_user_by( 'email', $email );
+		$update_user     = wp_update_user( array (
+			'ID'        => $user->ID, 
+			'user_pass' => $random_password
+		));
+
+		
+		if($update_user) 
+		{
+			$to        = $email;
+			$subject   = 'Your new password';
+			$sender    = get_option('name');
+			$message   = 'Login: '.$user->user_login."\r\n<br>";
+			$message  .= 'Your new password is: '.$random_password;
+			$headers[] = 'MIME-Version: 1.0' . "\r\n";
+			$headers[] = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+			$headers[] = "X-Mailer: PHP \r\n";
+			$headers[] = 'From: '.$sender.' < '.$email.'>' . "\r\n";
+			$mail      = wp_mail( $to, $subject, $message, $headers );
+
+			if($mail) $success = 'Thank you - you have been sent an email to update your password';
+
+		} 
+		else 
+		{
+			$error = 'Oops something went wrong updaing your account.';
+		}
+	}
+
+	if(!empty($error)) 
+	{
+		$json['renewpassword'] = false;
+		$json['message']       = $error;
+	}
+	else
+	{
+		$json['renewpassword'] = true;
+		$json['message']       = $success;		
+	}
+
+	echo json_encode($json);
+	die();
+}
+
 /**
  * Set answet to Tool question
  */

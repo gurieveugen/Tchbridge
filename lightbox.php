@@ -3,18 +3,20 @@
 		<h2>Sign In</h2>
 		<a href="#" onclick="showHide(true, ['#sign-up', '.lightbox-mask']); return false;">I need to sign up</a>
 	</div>
-	<form action="<?php bloginfo('url'); ?>/wp-login.php" method="post" name="loginform" class="form-sign form-sign-in">
+	<form id="form-sign-in" action="<?php bloginfo('url'); ?>/wp-login.php" method="post" name="loginform" class="form-sign form-sign-in">
 		<span class="input person">
 			<input type="text" placeholder="Username" name="log">
 		</span>
 		<span class="input key">
-			<input type="password" placeholder="Password" name="pwd">
+			<input type="password" placeholder="Password" name="pwd" >
 		</span>
 		<input type="hidden" name="redirect_to" value="<?php echo getRegistrationRedirectURL(); ?>"/>
 		<div class="text-center">
 			<button type="submit" class="btn pink big"><span>login</span><i class="pensil"></i></button>
-			<div><a href="/wp-login.php?action=lostpassword" class="pink">Forgot Password</a></div>
+			<div class="forgot-link"><a href="#" onclick="showHide(true, ['#forgot-password', '.lightbox-mask']); return false;" class="pink">Forgot Password</a></div>
 		</div>
+		<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+		<p class="error-password" style="display: none">The password you entered is incorrect.</p>
 	</form>
 </div>
 <div class="lightbox" style="display: none" id="sign-up">
@@ -23,7 +25,7 @@
 		<h5>To track progress, save and share responses.</h5>
 		<p>Already have an account?<br><a href="#" onclick="showHide(true, ['#sign-in', '.lightbox-mask']); return false;">Sign In</a></p>
 	</div>
-	<form action="<?php bloginfo('url'); ?>/wp-login.php?action=register" method="post" class="form-sign form-sign-up">
+	<form id="form-sign-up" action="<?php bloginfo('url'); ?>/wp-login.php?action=register" method="post" class="form-sign form-sign-up">
 		<span class="input person">
 			<input type="text" placeholder="Full Name" name="full_name">
 		</span>
@@ -50,9 +52,27 @@
 		</div>
 		<div class="text-center">
 			<button type="submit" class="btn big"><span>signup</span><i class="pensil"></i></button>
-			<p>By signing up, you are agreeing to our <a href="#" class="pink">Terms of Use</a>.</p>
+			<p class="text-terms">By signing up, you are agreeing to our <a href="#" class="pink">Terms of Use</a>.</p>
 		</div>
 		<input type="hidden" name="redirect_to" value="<?php echo getRegistrationRedirectURL(); ?>"/>
+		<?php wp_nonce_field( 'ajax-registration-nonce', 'security' ); ?>
+		<p class="error-user" style="display: none">That username is already taken, please choose another.</p>
+	</form>
+</div>
+<div class="lightbox" style="display: none" id="forgot-password">
+	<div class="text">
+		<h2>Forgot Password</h2>
+		<h5>Please enter your username or email address. You will receive a link to create a new password via email.</h5>		
+	</div>
+	<form id="form-forgot-password" action="<?php bloginfo('url'); ?>/wp-login.php?action=register" method="post" class="form-sign form-sign-up">		
+		<span class="input mail">
+			<input type="email" placeholder="E-mail" name="email">
+		</span>		
+		<div class="text-center">
+			<button type="submit" class="btn big"><span>Get New Password</span></button>			
+		</div>		
+		<?php wp_nonce_field( 'ajax-renew-nonce', 'security' ); ?>
+		<p class="error-user" style="display: none"></p>
 	</form>
 </div>
 <div class="lightbox-mask" style="display: none"></div>

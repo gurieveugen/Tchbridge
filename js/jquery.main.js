@@ -5,7 +5,7 @@ var page_number = 2;
 var interval_id = 0;
 
 (function(jQuery) {
-	jQuery(function() {
+	jQuery(function() {		
 		jQuery('input, select').styler();
 		
     	jQuery('.lightbox-mask').click(function(event){
@@ -56,6 +56,95 @@ var interval_id = 0;
   			setScrollPosition(); })
     	.mousedown(function() {
   			interval_id = setInterval( function(){ jQuery('.jquery-toolkit').jcarousel('scroll', '+=1'); }, 100); });
+
+    	// =========================================================
+    	// SIGN IN
+    	// =========================================================
+    	jQuery('#form-sign-in').on('submit', function(e){
+    		jQuery.ajax({
+    			type: "POST",
+    			url: ajax_login_object.ajaxurl + '?action=loginajax',
+    			dataType: 'json',
+    			data: {
+    				log: jQuery('#form-sign-in input[name="log"]').val(),			
+    				pwd: jQuery('#form-sign-in input[name="pwd"]').val(),
+    				security: jQuery('#form-sign-in input[name="security"]').val()},    			
+    			success: function(data){    				
+    				if(!data.loggedin)
+    				{
+    					jQuery('.error-password').fadeIn('slow');
+    				}
+    				else
+    				{
+    					document.location.href = data.redirect_to;
+    				}
+    			}
+    		});
+    		e.preventDefault();
+    	});    	
+    	// =========================================================
+    	// SIGN UP
+    	// =========================================================
+    	jQuery('#form-sign-up').on('submit', function(e){
+    		var employment = jQuery('#form-sign-up select[name="employment"]').val();
+    		if(employment == 'Other') employment = jQuery('#form-sign-up input[name="employment"]').val();
+
+    		jQuery.ajax({
+    			type: "POST",
+    			url: ajax_login_object.ajaxurl + '?action=registrationajax',
+    			dataType: 'json',
+    			data: {
+    				fullname: jQuery('#form-sign-up input[name="full_name"]').val(),
+    				email: jQuery('#form-sign-up input[name="user_email"]').val(),
+    				log: jQuery('#form-sign-up input[name="user_login"]').val(),
+    				pwd: jQuery('#form-sign-up input[name="password"]').val(),
+    				employment: employment,
+    				security: jQuery('#form-sign-up input[name="security"]').val()},    			
+    			success: function(data){
+    				console.log(data);
+    				if(!data.registered)
+    				{
+    					jQuery('.error-user').text(data.message);
+    					jQuery('.error-user').fadeIn('slow');
+    				}
+    				else
+    				{
+    					document.location.href = ajax_login_object.redirecturl;
+    				}
+    			}
+    		});
+    		e.preventDefault();
+    	});    	
+		// =========================================================
+    	// Renew lost password
+    	// =========================================================
+    	jQuery('#forgot-password').on('submit', function(e){
+    		jQuery.ajax({
+    			type: "POST",
+    			url: ajax_login_object.ajaxurl + '?action=lostpasswordajax',
+    			dataType: 'json',
+    			data: {    				
+    				email: jQuery('#forgot-password input[name="email"]').val(),
+    				security: jQuery('#forgot-password input[name="security"]').val()},    			
+    			success: function(data){
+    				console.log(data);
+    				if(!data.renewpassword)
+    				{
+    					jQuery('.error-user').text(data.message);
+    					jQuery('.error-user').fadeIn('slow');
+    				}
+    				else
+    				{
+                        jQuery('.error-user').text(data.message);
+                        jQuery('.error-user').fadeIn('slow');
+
+                        setTimeout(function() { document.location.href = ajax_login_object.redirecturl; }, 4000);
+    					
+    				}
+    			}
+    		});
+    		e.preventDefault();
+    	}); 
 })
 })(jQuery)
 
@@ -110,7 +199,7 @@ function setAnswer(post_id)
 		success: function(data){
 			if(data.msg == 'OK')
 			{
-				alert('Answer saved!');
+				alert('Answer(s) saved!');
 			}
 			else
 			{
@@ -195,7 +284,7 @@ function getMaxPosition()
 function showHide(show, doms)
 {
 	if(typeof(doms) == 'undefined') return;
-	var  default_doms = ['#sign-in', '#sign-up', '.lightbox-mask'];
+	var  default_doms = ['#sign-in', '#sign-up', '#forgot-password', '.lightbox-mask'];
 
 	for(var ddom in default_doms)
 	{

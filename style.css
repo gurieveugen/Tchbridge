@@ -1800,13 +1800,15 @@ h3{
 .question-block h3{
 	margin:0 0 11px;
 }
-.question-block p{
-	margin:0;
-}
-.question-block .question-text{
+.question-block, .question-text{
 	font:24px/28px 'BrandonGrotesqueRg', Arial, Helvetica, sans-serif;
 	color:#092b40;
+}
+.question-block {
 	margin:0 0 15px;
+}
+.question-text {
+	margin: 25px 0;
 }
 .question-block a{
 	text-decoration:underline;
@@ -2022,7 +2024,13 @@ h3{
 .posts-holder .post .image-block,
 .posts-holder .hentry .image-block{
 	float:left;
+	width:240px;
 	margin:5px 37px 0 0;
+}
+.posts-holder .post .image-block img,
+.posts-holder .hentry .image-block img{
+	display:block;
+	margin:0 auto;
 }
 .posts-holder .hentry .text,
 .posts-holder .post .text{
