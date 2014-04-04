@@ -1408,12 +1408,12 @@ a.pink{
 }
 .form-sign{
 	background:#fff;
-	padding:4px 0 54px;
+	padding:4px 0;
 	color:#545761;
 }
 .form-sign.form-sign-up{
 	margin:-10px 0 0;
-	padding:4px 0 33px;
+	padding:4px 0;
 }
 .lightbox a{
 	text-decoration:underline;
@@ -1506,6 +1506,28 @@ a.pink{
 }
 .lightbox .sign-up-box .btn.big span{
 	padding:0 14px;
+}
+.forgot-link{
+	padding:0 0 33px;
+}
+.text-terms{
+	padding:0 0 30px;
+}
+.error-password{
+	color:#b9106f;
+	background:url(images/bg-error.png) no-repeat 30px 26px;
+	padding:30px 20px 36px 72px;
+	border-top:1px solid #ccc;
+	font:16px/18px Arial, Helvetica, sans-serif;
+	font-style:italic;
+}
+.error-user{
+	color:#b9106f;
+	background:url(images/bg-error.png) no-repeat 30px 26px;
+	padding:30px 20px 36px 72px;
+	border-top:1px solid #ccc;
+	font:16px/18px Arial, Helvetica, sans-serif;
+	font-style:italic;
 }
 .main-green{
 	background:#c1d82f;
@@ -1722,6 +1744,13 @@ h3{
 	font:16px/18px 'BrandonGrotesqueMedium', Arial, Helvetica, sans-serif;
 	color:#b9106f;
 }
+.toolkit-content h6{
+	font-size: 150%;
+	margin:0 0 4px;
+	font-family: 'BrandonGrotesqueRg', Arial, Helvetica, sans-serif;
+	color:#b9106f;
+}
+
 .video-holder{
 	padding:20px 0 22px;
 	position:relative;
@@ -2262,3 +2291,4 @@ h3{
 	width: 960px;
 	overflow: hidden;
 }
+
