@@ -15,7 +15,7 @@
 			<button type="submit" class="btn pink big"><span>login</span><i class="pensil"></i></button>
 			<div class="forgot-link"><a href="#" onclick="showHide(true, ['#forgot-password', '.lightbox-mask']); return false;" class="pink">Forgot Password</a></div>
 		</div>
-		<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
+		
 		<p class="error-password" style="display: none">The password you entered is incorrect.</p>
 	</form>
 </div>
@@ -55,7 +55,7 @@
 			<p class="text-terms">By signing up, you are agreeing to our <a href="#" class="pink">Terms of Use</a>.</p>
 		</div>
 		<input type="hidden" name="redirect_to" value="<?php echo getRegistrationRedirectURL(); ?>"/>
-		<?php wp_nonce_field( 'ajax-registration-nonce', 'security' ); ?>
+		
 		<p class="error-user" style="display: none">That username is already taken, please choose another.</p>
 	</form>
 </div>
@@ -69,9 +69,8 @@
 			<input type="email" placeholder="E-mail" name="email">
 		</span>		
 		<div class="text-center">
-			<button type="submit" class="btn big"><span>Get New Password</span></button>			
-		</div>		
-		<?php wp_nonce_field( 'ajax-renew-nonce', 'security' ); ?>
+			<button type="submit" class="btn big"><span>Get New Password</span></button>		
+		</div>	
 		<p class="error-user" style="display: none"></p>
 	</form>
 </div>

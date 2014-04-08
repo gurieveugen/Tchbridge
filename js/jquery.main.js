@@ -63,12 +63,11 @@ var interval_id = 0;
     	jQuery('#form-sign-in').on('submit', function(e){
     		jQuery.ajax({
     			type: "POST",
-    			url: ajax_login_object.ajaxurl + '?action=loginajax',
+    			url: ajax_login_object.ajaxurl + '?action=login',
     			dataType: 'json',
     			data: {
     				log: jQuery('#form-sign-in input[name="log"]').val(),			
-    				pwd: jQuery('#form-sign-in input[name="pwd"]').val(),
-    				security: jQuery('#form-sign-in input[name="security"]').val()},    			
+    				pwd: jQuery('#form-sign-in input[name="pwd"]').val()},    			
     			success: function(data){    				
     				if(!data.loggedin)
     				{
@@ -91,17 +90,15 @@ var interval_id = 0;
 
     		jQuery.ajax({
     			type: "POST",
-    			url: ajax_login_object.ajaxurl + '?action=registrationajax',
+    			url: ajax_login_object.ajaxurl + '?action=registration',
     			dataType: 'json',
     			data: {
     				fullname: jQuery('#form-sign-up input[name="full_name"]').val(),
     				email: jQuery('#form-sign-up input[name="user_email"]').val(),
     				log: jQuery('#form-sign-up input[name="user_login"]').val(),
     				pwd: jQuery('#form-sign-up input[name="password"]').val(),
-    				employment: employment,
-    				security: jQuery('#form-sign-up input[name="security"]').val()},    			
+    				employment: employment},    			
     			success: function(data){
-    				console.log(data);
     				if(!data.registered)
     				{
     					jQuery('.error-user').text(data.message);
@@ -121,13 +118,11 @@ var interval_id = 0;
     	jQuery('#forgot-password').on('submit', function(e){
     		jQuery.ajax({
     			type: "POST",
-    			url: ajax_login_object.ajaxurl + '?action=lostpasswordajax',
+    			url: ajax_login_object.ajaxurl + '?action=lostpassword',
     			dataType: 'json',
     			data: {    				
-    				email: jQuery('#forgot-password input[name="email"]').val(),
-    				security: jQuery('#forgot-password input[name="security"]').val()},    			
-    			success: function(data){
-    				console.log(data);
+    				email: jQuery('#forgot-password input[name="email"]').val()},    			
+    			success: function(data){    				
     				if(!data.renewpassword)
     				{
     					jQuery('.error-user').text(data.message);
@@ -145,6 +140,36 @@ var interval_id = 0;
     		});
     		e.preventDefault();
     	}); 
+
+        // =========================================================
+        // RESPONSE BUTTON
+        // =========================================================
+        jQuery('.response-button').click(function(e){
+            var id   = jQuery(this).data('id');
+            var item = '';            
+            var all  = 0;
+
+            if(id == -1) 
+            {
+                all  = 1;
+                item = eval('item_all');
+            }
+            else
+            {
+                item = eval('item_' + id);
+            }
+                
+            jQuery.ajax({
+                type: "POST",
+                url: ajax_login_object.ajaxurl + '?action=sendResponse',
+                dataType: 'json',
+                data: { items: item, all: all},               
+                success: function(data){                    
+                    alert(data.message);
+                }
+            });
+            e.preventDefault();
+        });
 })
 })(jQuery)
 

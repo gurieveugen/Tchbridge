@@ -144,14 +144,8 @@ add_action('wp_ajax_selectdeselectcat', 'selectDeselectCatAJAX');
 add_action('wp_ajax_nopriv_selectdeselectcat', 'selectDeselectCatAJAX');
 add_action('wp_ajax_set_scroll_position', 'setScrollPositionAJAX');
 add_action('wp_ajax_nopriv_set_scroll_position', 'setScrollPositionAJAX');
-add_action('register_form','custom_register_form');
-add_action('user_register', 'signInAfterSignUp');
-if (!is_user_logged_in()) 
-{    
-	add_action('init', 'loginInitAJAX');
-}
-add_filter('registration_errors', 'custom_registration_errors', 10, 3);
-add_action('user_register', 'custom_user_register');
+add_filter( 'wp_mail_content_type', 'setContentType' );
+add_action('init', 'loginInitAJAX');
 add_filter('gettext', 'ts_edit_password_email_text');
 add_filter('wp_list_categories', 'replaceCategoryCSSClass');
 add_filter( 'show_admin_bar' , 'adminBarJustForAdmins');
@@ -184,14 +178,12 @@ function adminBarJustForAdmins()
 }
 
 /**
- * Sign in after Sign up
- * @param  [type] $user_id [description]
- * @return [type]          [description]
+ * Set default content type 
+ * for wp_mail
  */
-function signInAfterSignUp($user_id) 
+function setContentType( $content_type )
 {
-    wp_set_current_user( $user_id );
-    wp_set_auth_cookie( $user_id, false, is_ssl() );
+	return 'text/html';
 }
 
 /**
@@ -217,62 +209,6 @@ function replaceCategoryCSSClass($list)
 	return $list;
 }
 
-/**
- * Add custom fields to register form
- */
-function custom_register_form()
-{
-	$full_name  = (isset($_POST['full_name'])) ? $_POST['full_name'] : '';
-	$employment = (isset($_POST['employment'])) ? $_POST['employment'] : '';
-	$password   = (isset($_POST['password'])) ? $_POST['password'] : '';
-
-    ?>
-    <p>
-        <label for="full_name"><?php _e('Full name') ?><br />
-            <input type="text" name="full_name" id="full_name" class="input" value="<?php echo esc_attr(stripslashes($full_name)); ?>" size="75" required />
-        </label>
-    </p>
-    <p>
-        <label for="employment"><?php _e('Employment') ?><br />
-            <input type="text" name="employment" id="employment" class="input" value="<?php echo esc_attr(stripslashes($employment)); ?>" size="75" required />
-        </label>
-    </p>
-    <p>
-        <label for="password"><?php _e('Password') ?><br />
-            <input type="password" name="password" id="password" class="input" value="<?php echo esc_attr(stripslashes($password)); ?>" size="75" />
-        </label>
-    </p>    
-    <input type="hidden" name="redirect_to" value="<?php echo getRegistrationRedirectURL(); ?>"/>
-    <?php
-}
-/**
- * Check errors
- * @param  object $errors               
- * @param  string $sanitized_user_login 
- * @param  string $user_email           
- * @return object
- */
-function custom_registration_errors($errors, $sanitized_user_login, $user_email) 
-{
-    if(empty( $_POST['full_name'])) $errors->add('full_name_error', __('<strong>ERROR</strong>: You must include a full name.'));
-    if(empty( $_POST['employment'])) $errors->add('employment_error', __('<strong>ERROR</strong>: You must include a employment.'));
-    return $errors;
-}
-/**
- * Save user data
- * @param  integer $user_id
- */
-function custom_user_register ($user_id) 
-{
-	$userdata       = array();	 
-	$userdata['ID'] = $user_id;
-	if($_POST['password'] !== '') $userdata['user_pass'] = $_POST['password'];
-	$new_user_id = wp_update_user( $userdata );
-
-    if(isset($_POST['full_name'])) update_user_meta($user_id, 'full_name', $_POST['full_name']);
-    if(isset($_POST['employment'])) update_user_meta($user_id, 'employment', $_POST['employment']);
-    if(isset($_POST['password'])) update_user_meta($user_id, 'password', $_POST['password']);
-}
 /**
  * Replace register text
  * @param  string $text 
@@ -410,144 +346,10 @@ function getCategoriesHTML()
 function loginInitAJAX()
 {	
     wp_localize_script('carousel', 'ajax_login_object', array( 
-		'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+		'ajaxurl'        => get_bloginfo('template_url').'/includes/ajax.php',
 		'redirecturl'    => getRegistrationRedirectURL(),
 		'loadingmessage' => __('Sending user info, please wait...')
     ));
-    
-    add_action('wp_ajax_nopriv_loginajax', 'loginAJAX');
-    add_action('wp_ajax_nopriv_registrationajax', 'registrationAJAX');
-    add_action('wp_ajax_nopriv_lostpasswordajax', 'lostPasswordAJAX');
-}
-
-/**
- * Login AJAX
- */
-function loginAJAX()
-{
-	check_ajax_referer( 'ajax-login-nonce', 'security' );
-
-	$info                  = array();
-	$info['user_login']    = $_POST['log'];
-	$info['user_password'] = $_POST['pwd'];
-	$info['remember']      = true;
-	$user_signon           = wp_signon( $info, false );
-
-	if ( is_wp_error($user_signon) )
-	{
-		$json['loggedin'] = false;
-		$json['message']  = __('The password you entered is incorrect.');	    
-	} 
-	else 
-	{
-		$json['loggedin']    = true;
-		$json['message']     = __('Login successful, redirecting...');	  
-		$json['redirect_to'] = get_user_meta($user_signon->ID, 'default_url', true);  
-	}
-
-	echo json_encode($json);
-	die();
-}
-
-/**
- * Registration AJAX
- */
-function registrationAJAX()
-{
-	check_ajax_referer('ajax-registration-nonce', 'security');
-
-	$user_id = wp_create_user( $_POST['log'], $_POST['pwd'], $_POST['email']); 
-	if(is_wp_error($user_id))
-	{
-		$json['registered'] = false;
-		$json['message']    = $user_id->get_error_message();
-	}
-	else
-	{
-		if(isset($_POST['fullname'])) update_user_meta($user_id, 'fullname', $_POST['fullname']);
-    	if(isset($_POST['employment'])) update_user_meta($user_id, 'employment', $_POST['employment']);
-
-    	wp_set_current_user($user_id);
-    	wp_set_auth_cookie($user_id, false, is_ssl());
-
-    	$json['registered'] = true;
-		$json['message']    = __('Registration successful, redirecting...');
-	}
-
-	echo json_encode($json);
-	die();
-}
-
-/**
- * Renew losted password
- */
-function lostPasswordAJAX()
-{
-	check_ajax_referer('ajax-renew-nonce', 'security');
-	global $wpdb;
-	
-	$error   = '';
-	$success = '';
-
-	$email = trim($_POST['email']);
-
-	if(empty($email)) 
-	{
-		$error = 'Enter a e-mail address..';
-	} 
-	else if(!is_email($email)) 
-	{
-		$error = 'Invalid e-mail address.';
-	} 
-	else if(!email_exists($email))
-	{
-		$error = 'There is no user registered with that email address.';
-	} 
-	else 
-	{	
-		$random_password = wp_generate_password( 12, false );
-		$user            = get_user_by( 'email', $email );
-		$update_user     = wp_update_user( array (
-			'ID'        => $user->ID, 
-			'user_pass' => $random_password
-		));
-
-		
-		if($update_user) 
-		{
-			$to        = $email;
-			$subject   = 'Your new password';
-			$sender    = get_option('name');
-			$message   = 'Login: '.$user->user_login."\r\n<br>";
-			$message  .= 'Your new password is: '.$random_password;
-			$headers[] = 'MIME-Version: 1.0' . "\r\n";
-			$headers[] = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-			$headers[] = "X-Mailer: PHP \r\n";
-			$headers[] = 'From: '.$sender.' < '.$email.'>' . "\r\n";
-			$mail      = wp_mail( $to, $subject, $message, $headers );
-
-			if($mail) $success = 'Thank you - you have been sent an email to update your password';
-
-		} 
-		else 
-		{
-			$error = 'Oops something went wrong updaing your account.';
-		}
-	}
-
-	if(!empty($error)) 
-	{
-		$json['renewpassword'] = false;
-		$json['message']       = $error;
-	}
-	else
-	{
-		$json['renewpassword'] = true;
-		$json['message']       = $success;		
-	}
-
-	echo json_encode($json);
-	die();
 }
 
 /**

@@ -8,8 +8,6 @@
 get_header(); 
 $items               = getDashboardItems($current_user->ID);
 $items_count         = count($items);
-//$all_responses       = $current_user->user_email.'?subject='.rawurlencode('All responses').'&body=';
-$all_responses 		 = ''; 
 $theme_options       = $GLOBALS['gcoptions']->getAllOptions();
 $tools_per_page_dash = intval($theme_options['tools_per_page_dash']);
 $paged               = max(1, intval(get_query_var('paged')))-1;
@@ -36,8 +34,7 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 									{
 										echo get_the_post_thumbnail($value->ID, 'tool-small-img', array('alt' => get_the_title($value->ID)));
 									}
-									?>
-									<!-- <img src="<?php echo TDU; ?>/images/img-d-1.png" alt="image description"> -->
+									?>									
 								</div>
 								<h3><?php echo strip_tags($value->post_title); ?></h3>
 								<a href="#" onclick="openClose(this); return false;" class="btn-arrow">open/close</a>
@@ -45,22 +42,23 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 							<div class="item-content cf">
 								<div class="content">
 
-									<?php 
-									$all_responses .= strip_tags($value->post_title)."\n";
+									<?php 									
+									$answers[$value->ID]['title'] = $value->post_title;									
 									foreach ($value->meta['question'] as $key2 => $value2) 
 									{
 										echo '<h4>'.$value2.'</h4>';
-										echo '<p>'.$value->answer[$key2].'</p>';
-										$mailto        .= rawurlencode($value2.' '.$value->answer[$key2]."\n");
-										$all_responses .= $value2.' '.$value->answer[$key2]."\n";
+										echo '<p>'.$value->answer[$key2].'</p>';										
+										
+										$answers[$value->ID]['items'][] = array('question' => $value2, 'answer' => $value->answer[$key2]);
+										$mailto        .= rawurlencode($value2.' '.$value->answer[$key2]."\n");										
 									}	
-									$all_responses .= rawurlencode("\n\n");														
+																							
 									?>									
 								</div>
 								<div class="aside buttons">
+									<script type='text/javascript'>/* <![CDATA[ */ var item_<?php echo $value->ID; ?> = <?php echo json_encode($answers[$value->ID]); ?>; /* ]]> */</script>
 									<button class="btn pink mini" onclick="window.open('<?php echo get_permalink($value->ID); ?>', '_self', '');"><span>edit</span><i class="pensil"></i></button>
-									<button class="btn mini" onclick="window.open('mailto:<?php echo $mailto;?>', '_self', '');"><span>email</span><i class="mail"></i></button>	
-						
+									<button class="btn mini response-button" data-id="<?php echo $value->ID; ?>"><span>email</span><i class="mail"></i></button>									
 								</div>
 							</div>
 						</div>
@@ -72,9 +70,9 @@ if($_GET['display'] != 'all') $items = array_slice($items, $offset, $tools_per_p
 				<div class="button-columns cf">
 					<div class="column">
 						<h2>Send my responses!</h2>
-						
-						<!-- Original Email Button <a class="btn big" href="mailto:<?php echo $all_responses;?>"><span>email</span><i class="mail"></i></a> -->
-						<a class="btn big st_email_custom" st_title="All responses"><span>email</span><i class="mail"></i></a>
+						<script type='text/javascript'>/* <![CDATA[ */ var item_all = <?php echo json_encode($answers); ?>; /* ]]> */</script>
+						<a class="btn big response-button" href="#" data-id="-1"><span>email</span><i class="mail"></i></a>
+						<!-- <a class="btn big st_email_custom" st_title="All responses"><span>email</span><i class="mail"></i></a> -->
 					</div>
 					<div class="column">
 						<h2>Help us improve!</h2>
