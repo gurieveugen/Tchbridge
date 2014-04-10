@@ -149,6 +149,8 @@ add_action('init', 'loginInitAJAX');
 add_filter('gettext', 'ts_edit_password_email_text');
 add_filter('wp_list_categories', 'replaceCategoryCSSClass');
 add_filter( 'show_admin_bar' , 'adminBarJustForAdmins');
+add_filter('wp_mail_from','setWPMailFrom');
+add_filter('wp_mail_from_name','setWPMailFromName');
 // =========================================================
 // JUST FOR ADMIN
 // =========================================================
@@ -177,6 +179,26 @@ function adminBarJustForAdmins()
 	return false;
 }
 
+
+/**
+ * Set default From email
+ * for wp_mail
+ * @return string
+ */
+function setWPMailFrom($content_type) 
+{
+	return 'info@techbridgegirls.org';
+}
+
+/**
+ * Set default From Name
+ * fot wp_mail
+ * @return string
+ */
+function setWPMailFromName($name) 
+{
+	return 'Techbridge';
+}
 /**
  * Set default content type 
  * for wp_mail
