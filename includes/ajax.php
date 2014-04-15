@@ -190,6 +190,7 @@ class AJAX{
 		global $current_user;
 
 		$msg     = '<img src="'.get_bloginfo('template_url').'/images/email_logo.png" alt="Badge green"><br>';
+		$msg    .= '<p>Thank you for taking the time to respond to the Role Models Matter online training questions. Below are the responses you have entered so far. You can log back into the training site at any time to change or add new responses.</p>';
 		$subject = 'Role Models Matter Training Responses.';
 
 		if(intval($_POST['all']))
