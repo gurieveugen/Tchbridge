@@ -93,10 +93,10 @@ class AJAX{
 
 				@wp_mail(get_option('admin_email'), sprintf(__('[%s] New User Registration'), $blogname), $message);
 				
-				$message      = '<img src="'.get_bloginfo('template_url').'/images/email_logo.png" alt="Badge green"><br>';
+				$message      = '<img src="'.get_bloginfo('template_url').'/images/email_logo_small.png" alt="Badge green"><br>';
 				$message     .= 'Thank you for signing up for the Role Models Matter toolkit.  This toolkit provides fun, online training and resources for role models to develop the skills to engage youth in STEM (science, technology, engineering, and math).  Please be sure to sign in each time you visit the site so that you can save and share responses to questions within each tool.'."<br><br>\r\n\n";
 				$message     .= sprintf('Username: %s', $user->user_login)."<br>\r\n";
-				$message     .= sprintf('Link to Role Models Matter Toolkit: %s', get_bloginfo('url'))."<br>\r\n";
+				$message     .= sprintf('Link to Role Models Matter Toolkit: %s', 'http://techbridgegirls.org/rolemodelsmatter')."<br>\r\n";
 
 		    	wp_mail($user->user_email, sprintf(__('[%s] Your username and password'), $blogname), $message);
 
@@ -189,7 +189,7 @@ class AJAX{
 	{
 		global $current_user;
 
-		$msg     = '<img src="'.get_bloginfo('template_url').'/images/email_logo.png" alt="Badge green"><br>';
+		$msg     = '<img src="'.get_bloginfo('template_url').'/images/email_logo_small.png" alt="Badge green"><br>';
 		$msg    .= '<p>Thank you for taking the time to respond to the Role Models Matter online training questions. Below are the responses you have entered so far. You can log back into the training site at any time to change or add new responses.</p>';
 		$subject = 'Role Models Matter Training Responses.';
 

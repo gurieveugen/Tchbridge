@@ -52,7 +52,7 @@
 		</div>
 		<div class="text-center">
 			<button type="submit" class="btn big"><span>signup</span><i class="pensil"></i></button>
-			<p class="text-terms">By signing up, you are agreeing to our <a href="#" class="pink">Terms of Use</a>.</p>
+			<p class="text-terms">By signing up, you are agreeing to our <a href="http://www.techbridgegirls.org/index.php?id=93" target="_blank" class="pink">Terms of Use</a>.</p>
 		</div>
 		<input type="hidden" name="redirect_to" value="<?php echo getRegistrationRedirectURL(); ?>"/>
 		
