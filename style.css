@@ -1438,6 +1438,13 @@ a.pink{
 }
 .lightbox .input.people{
 	padding:21px 30px 25px 70px;
+	width:100%;
+}
+.lightbox .input.people select{
+	width:100%;
+}
+.lightbox .input.people .jq-selectbox{
+	width:100% !important;
 }
 .lightbox input[type="text"],
 .lightbox input[type="email"],
@@ -1746,7 +1753,7 @@ h3{
 }
 .toolkit-content h6{
 	font-size: 150%;
-	margin:0 0 4px;
+	margin:0 0 20px;
 	font-family: 'BrandonGrotesqueRg', Arial, Helvetica, sans-serif;
 	color:#b9106f;
 }
